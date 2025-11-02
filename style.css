@@ -1,0 +1,166 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1f3b75;
+}
+
+/* ===== CARD UNIFICADO ===== */
+.card_login {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  width: 800px;
+  max-width: 90%;
+  height: 480px;
+}
+
+/* ===== LADO ESQUERDO (FORMULÁRIO) ===== */
+.login_area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2b4c8c;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  padding: 60px;
+  position: relative;
+  overflow: visible; /* permite a imagem ultrapassar os limites */
+  margin-right: -20px; /* invade a imagem */
+  z-index: 3;
+}
+
+.formulario_login {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 2;
+}
+
+.titulo_login {
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* ===== CAMPOS DE ENTRADA ===== */
+.caixa_login {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.entrada_login {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  outline: none;
+}
+
+.entrada_login::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rotulo_login {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== LEMBRAR SENHA ===== */
+.lembrar_senha_area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.esqueceu_senha {
+  color: #fff;
+  text-decoration: none;
+}
+
+.esqueceu_senha:hover {
+  text-decoration: underline;
+}
+
+/* ===== BOTÃO ===== */
+.botao_login {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff8c42, #ffb347);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botao_login:hover {
+  opacity: 0.9;
+}
+
+.registro_login {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.registro_login a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ===== LADO DIREITO (IMAGEM DENTRO DO CARD) ===== */
+.imagem_area {
+  flex: 1;
+  background: #102544;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 20px 20px 0; /* bordas apenas do lado direito */
+  overflow: hidden;
+}
+
+.imagem_fundo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* preenche completamente o espaço */
+  border-radius: 0; /* remove bordas internas */
+  display: block;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .card_login {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .imagem_area {
+    display: none;
+  }
+
+  .login_area {
+    padding: 30px 20px;
+  }
+}

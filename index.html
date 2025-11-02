@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Acadêmica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card_login">
+      <!-- ===== LADO ESQUERDO: LOGIN ===== -->
+      <div class="login_area">
+        <form action="" class="formulario_login">
+          <h1 class="titulo_login">Entrar</h1>
+
+          <div class="conteudo_login">
+            <div class="caixa_login">
+              <i class="ri-user-3-line icone_login"></i>
+              <div class="entrada_caixa_login">
+                <input type="text" required class="entrada_login" placeholder="Digite seu nome">
+                <label class="rotulo_login">Usuário</label>
+              </div>
+            </div>
+
+            <div class="caixa_login">
+              <i class="ri-lock-2-line icone_login"></i>
+              <div class="entrada_caixa_login">
+                <input type="password" required class="entrada_login" id="senha-login" placeholder="Digite sua senha">
+                <label for="senha-login" class="rotulo_login">Senha</label>
+                <i class="ri-eye-off-line icone_senha"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="lembrar_senha_area">
+            <div class="grupo_lembrar">
+              <input type="checkbox" name="lembrar" class="entrada_lembrar">
+              <label for="lembrar" class="rotulo_lembrar">Lembrar-me</label>
+            </div>
+            <a href="#" class="esqueceu_senha">Esqueceu a senha?</a>
+          </div>
+
+          <button type="submit" class="botao_login">Entrar</button>
+
+          <p class="registro_login">
+            Não tem uma conta? <a href="#">Cadastre-se</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- ===== LADO DIREITO: IMAGEM ===== -->
+      <div class="imagem_area">
+        <img src="imagens/Fundo_Educacional.png" alt="Fundo Educacional" class="imagem_fundo">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
