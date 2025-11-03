@@ -1,11 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadrastro</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    
+    <div class="container">
+    <div class="card_login">
+
+      <!-- LADO ESQUERDO: FORMULÁRIO DE CADASTRO -->
+      <div class="login_area">
+        <form class="formulario_login">
+          <h2 class="titulo_login">Cadastrar</h2>
+
+          <div class="caixa_login">
+            <input type="text" class="entrada_login" placeholder="Digite seu nome completo" required />
+            <label class="rotulo_login">Nome completo</label>
+          </div>
+
+          <div class="caixa_login">
+            <input type="email" class="entrada_login" placeholder="Digite seu e-mail" required />
+            <label class="rotulo_login">E-mail</label>
+          </div>
+
+          <div class="caixa_login">
+            <input type="text" class="entrada_login" placeholder="Crie um nome de usuário" required />
+            <label class="rotulo_login">Usuário</label>
+          </div>
+
+          <div class="caixa_login">
+            <input type="password" class="entrada_login" placeholder="Crie uma senha" required />
+            <label class="rotulo_login">Senha</label>
+          </div>
+
+          <button type="submit" class="botao_login">Cadastrar</button>
+
+          <p class="registro_login">
+            Já tem uma conta? <a href="login.html">Entrar</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- LADO DIREITO: IMAGEM -->
+      <div class="imagem_area">
+        <img src="" alt="Imagem Educacional" class="imagem_fundo" />
+      </div>
+    </div>
+  </div>
 </body>
 </html>
