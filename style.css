@@ -48,7 +48,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #2b4c8c;
+  background: linear-gradient(160deg, #19257a, #3e76bc);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   padding: 30px 20px;

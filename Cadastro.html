@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadrastro</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="Cadastro.css" />
 </head>
 <body>
-    <div class="container">
-    <div class="card_login">
+  <div class="container">
 
-      <!-- LADO ESQUERDO: FORMULÁRIO DE CADASTRO -->
-      <div class="login_area">
-        <form class="formulario_login">
-          <h2 class="titulo_login">Cadastrar</h2>
+    <!-- 🔹 IMAGEM NO TOPO -->
+    <div class="imagem_topo">
+      <img src="imagens/Up_Cadastro.png" alt="Imagem Educacional" class="imagem_ilustracao" />
+    </div>
 
-          <div class="caixa_login">
-            <input type="text" class="entrada_login" placeholder="Digite seu nome completo" required />
-            <label class="rotulo_login">Nome completo</label>
-          </div>
+    <!-- 🔹 FORMULÁRIO ABAIXO -->
+    <div class="formulario_area">
+      <form class="formulario_cadastro">
+        <h2 class="titulo_cadastro">Cadastrar</h2>
 
-          <div class="caixa_login">
-            <input type="email" class="entrada_login" placeholder="Digite seu e-mail" required />
-            <label class="rotulo_login">E-mail</label>
-          </div>
+        <div class="campo">
+          <input type="text" required placeholder="Digite seu nome completo">
+          <label>Nome completo</label>
+        </div>
 
-          <div class="caixa_login">
-            <input type="text" class="entrada_login" placeholder="Crie um nome de usuário" required />
-            <label class="rotulo_login">Usuário</label>
-          </div>
+        <div class="campo">
+          <input type="email" required placeholder="Digite seu e-mail">
+          <label>E-mail</label>
+        </div>
 
-          <div class="caixa_login">
-            <input type="password" class="entrada_login" placeholder="Crie uma senha" required />
-            <label class="rotulo_login">Senha</label>
-          </div>
+        <div class="campo">
+          <input type="text" required placeholder="Crie um nome de usuário">
+          <label>Usuário</label>
+        </div>
 
-          <button type="submit" class="botao_login">Cadastrar</button>
+        <div class="campo">
+          <input type="password" required placeholder="Crie uma senha">
+          <label>Senha</label>
+        </div>
 
-          <p class="registro_login">
-            Já tem uma conta? <a href="index.html">Entrar</a>
-          </p>
-        </form>
-      </div>
+        <button type="submit" class="botao_cadastro">Cadastrar</button>
 
-      <!-- LADO DIREITO: IMAGEM -->
-      <div class="imagem_area">
-        <img src="imagens/Up_Cadastro.png" alt="Imagem Educacional" class="imagem_fundo" />
-      </div>
+        <p class="texto_login">
+          Já tem uma conta? <a href="index.html">Entrar</a>
+        </p>
+      </form>
     </div>
   </div>
 </body>
