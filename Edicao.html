@@ -3,51 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerenciar Alunos</title>
-  <link rel="stylesheet" href="admin.css" />
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <title>Gestão de Alunos</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="edicao.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="layout">
     <!-- ===== MENU LATERAL ===== -->
-    <aside class="sidebar">
-      <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
-      <nav class="menu">
-        <a href="aluno.html" class="menu-item"><i class="ri-dashboard-line"></i> Dashboard</a>
-        <a href="#" class="menu-item ativo"><i class="ri-user-2-line"></i> Alunos</a>
-        <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
-      </nav>
-      <button id="botaoSair" class="botao-sair"><i class="ri-logout-box-r-line"></i> Sair</button>
-    </aside>
+<aside class="sidebar">
+  <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
+
+  <!-- ===== IMAGEM BANNER VERTICAL ===== -->
+  <div class="sidebar-banner">
+    <img src="imagens/Up.png" alt="Gestão de alunos" class="banner-imagem">
+  </div>
+
+  <nav class="menu">
+    <a href="admin.html" class="menu-item"><i class="ri-dashboard-line"></i> Dashboard</a>
+    <a href="Edicao.html" class="menu-item ativo"><i class="ri-user-2-line"></i> Alunos</a>
+    <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
+  </nav>
+</aside>
 
     <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="conteudo">
       <header class="topbar">
-        <h1>Gerenciar Alunos</h1>
-        <p>Visualize, edite ou exclua os alunos cadastrados no sistema.</p>
+        <h1>Gerenciamento de Alunos</h1>
+        <p>Visualize, edite ou remova alunos cadastrados.</p>
       </header>
 
-      <section class="secao ativa">
-        <table class="tabela-alunos">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Turma</th>
-              <th>Disciplina</th>
-              <th>Professor</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaAlunos"></tbody>
-        </table>
+      <button class="botao-novo">+ Novo Aluno</button>
+
+      <section class="tabela-container">
+        <div class="tabela-wrapper">
+          <table class="tabela-alunos">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Turma</th>
+                <th>Disciplina</th>
+                <th>Professor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaAlunos"></tbody>
+          </table>
+        </div>
       </section>
     </main>
   </div>
 
-  <!-- ===== SCRIPT ===== -->
   <script>
-    // ==== DADOS DE EXEMPLO ====
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [
+    const alunos = [
       { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web", professor: "Carlos Andrade" },
       { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados", professor: "Ana Lima" },
       { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação", professor: "João Melo" }
@@ -55,52 +62,37 @@
 
     const tabela = document.getElementById("tabelaAlunos");
 
-    function atualizarTabela() {
-      tabela.innerHTML = "";
-      alunos.forEach((aluno, index) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${aluno.nome}</td>
-          <td>${aluno.turma}</td>
-          <td>${aluno.disciplina}</td>
-          <td>${aluno.professor}</td>
-          <td>
-            <button class="btn-editar" onclick="editarAluno(${index})"><i class="ri-pencil-line"></i></button>
-            <button class="btn-excluir" onclick="excluirAluno(${index})"><i class="ri-delete-bin-line"></i></button>
-          </td>
-        `;
-        tabela.appendChild(tr);
-      });
-    }
-
-    function editarAluno(index) {
-      const novoNome = prompt("Novo nome do aluno:", alunos[index].nome);
-      if (novoNome) {
-        alunos[index].nome = novoNome;
-        salvarAlunos();
-        atualizarTabela();
-      }
-    }
-
-    function excluirAluno(index) {
-      if (confirm(`Excluir ${alunos[index].nome}?`)) {
-        alunos.splice(index, 1);
-        salvarAlunos();
-        atualizarTabela();
-      }
-    }
-
-    function salvarAlunos() {
-      localStorage.setItem("alunos", JSON.stringify(alunos));
-    }
-
-    atualizarTabela();
-
-    // ===== BOTÃO SAIR =====
-    document.getElementById("botaoSair").addEventListener("click", () => {
-      localStorage.removeItem("adminLogado");
-      window.location.href = "index.html";
+    alunos.forEach((aluno, i) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${aluno.nome}</td>
+        <td>${aluno.turma}</td>
+        <td>${aluno.disciplina}</td>
+        <td>${aluno.professor}</td>
+        <td>
+          <button class="acao editar" onclick="editarAluno(${i})"><i class="ri-edit-line"></i></button>
+          <button class="acao excluir" onclick="excluirAluno(${i})"><i class="ri-delete-bin-6-line"></i></button>
+        </td>
+      `;
+      tabela.appendChild(row);
     });
+
+    function editarAluno(i) {
+      const novoNome = prompt("Digite o novo nome do aluno:", alunos[i].nome);
+      if (novoNome) {
+        alunos[i].nome = novoNome;
+        alert("Aluno atualizado com sucesso!");
+        location.reload();
+      }
+    }
+
+    function excluirAluno(i) {
+      if (confirm(`Deseja realmente excluir ${alunos[i].nome}?`)) {
+        alunos.splice(i, 1);
+        alert("Aluno excluído com sucesso!");
+        location.reload();
+      }
+    }
   </script>
 </body>
 </html>
