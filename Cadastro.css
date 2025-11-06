@@ -1,4 +1,4 @@
-/* ===== RESET ===== */
+/* ===== GERAL ===== */
 * {
   margin: 0;
   padding: 0;
@@ -16,15 +16,14 @@ body {
   align-items: center;
 }
 
-/* ===== CONTAINER GERAL ===== */
+
+
 .container {
-  width: 100%;
-  max-width: 520px;
+  width: 420px;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
   border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,13 +46,47 @@ body {
   object-fit: contain;
 }
 
-/* ===== FORMULÁRIO ABAIXO ===== */
+/* ===== ABAS (ALUNO / PROFESSOR) ===== */
+.abas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 0;
+  background: transparent;
+
+}
+
+.aba {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none; 
+  box-shadow: none; 
+}
+
+.aba:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.aba.ativa {
+  background: linear-gradient(90deg, #f18013, #f8a126);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(248, 161, 38, 0.5);
+}
+
+/* ===== FORMULÁRIO ===== */
 .formulario_area {
   width: 100%;
-  padding: 25px 25px 40px;
+  padding: 25px 15px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .titulo_cadastro {
@@ -71,6 +104,7 @@ body {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 }
 
 .campo label {
@@ -80,7 +114,8 @@ body {
   font-weight: 500;
 }
 
-.campo input {
+.campo input,
+.campo select {
   width: 100%;
   padding: 14px 15px;
   border: none;
@@ -90,15 +125,21 @@ body {
   font-size: 15px;
   outline: none;
   transition: 0.3s ease;
+  appearance: none;
 }
 
-.campo input:focus {
+.campo input:focus,
+.campo select:focus {
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 0 0 2px #f8a126;
 }
 
 .campo input::placeholder {
   color: rgba(255, 255, 255, 0.7);
+}
+
+.campo select option {
+  color: #000;
 }
 
 /* ===== BOTÃO ===== */
@@ -140,6 +181,11 @@ body {
   color: #ffb24f;
 }
 
+/* ===== FORMULÁRIOS OCULTOS ===== */
+.oculto {
+  display: none;
+}
+
 /* ===== RESPONSIVO ===== */
 @media (max-width: 480px) {
   .container {
@@ -152,6 +198,11 @@ body {
   }
 
   .formulario_area {
-    padding: 25px 25px 35px;
+    padding: 25px 15px 35px;
+  }
+
+  .aba {
+    padding: 8px 14px;
+    font-size: 14px;
   }
 }

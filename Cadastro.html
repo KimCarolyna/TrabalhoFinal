@@ -11,19 +11,30 @@
 
     <!-- 🔹 IMAGEM NO TOPO -->
     <div class="imagem_topo">
-      <img src="imagens/Up_Cadastro.png" alt="Imagem Educacional" class="imagem_ilustracao" />
+    <img src="imagens/image.png" alt="Imagem Educacional" class="imagem_ilustracao">
     </div>
 
-    <!-- 🔹 FORMULÁRIO ABAIXO -->
-    <div class="formulario_area">
+    <!-- 🔹 Abas de seleção -->
+    <div class="abas">
+      <button class="aba ativa" id="abaAluno" onclick="mostrarAba('aluno')">Aluno</button>
+      <button class="aba" id="abaProfessor" onclick="mostrarAba('professor')">Professor</button>
+    </div>
+
+    <!-- 🔹 FORMULÁRIO ALUNO -->
+    <div class="formulario_area" id="formAluno">
       <form class="formulario_cadastro">
-        <h2 class="titulo_cadastro">Cadastrar</h2>
+        <h2 class="titulo_cadastro">Cadastrar Aluno</h2>
 
         <div class="campo">
           <input type="text" required placeholder="Digite seu nome completo">
           <label>Nome completo</label>
         </div>
 
+        <div class="campo">
+          <input type="text" required placeholder="Digite seu CPF" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+          <label>CPF</label>
+        </div>
+        
         <div class="campo">
           <input type="email" required placeholder="Digite seu e-mail">
           <label>E-mail</label>
@@ -39,6 +50,28 @@
           <label>Senha</label>
         </div>
 
+        <div class="campo">
+          <input type="date" required>
+          <label>Data de nascimento</label>
+        </div>
+
+        <div class="campo">
+          <input type="text" required placeholder="Digite sua nacionalidade">
+          <label>Nacionalidade</label>
+        </div>
+
+        <div class="campo">
+          <select required>
+            <option value="" disabled selected>Selecione sua escolaridade</option>
+            <option value="medio">Ensino Médio Completo</option>
+            <option value="superior">Ensino Superior</option>
+            <option value="pos">Pós-graduação</option>
+            <option value="mestrado">Mestrado</option>
+            <option value="doutorado">Doutorado</option>
+          </select>
+          <label>Escolaridade</label>
+        </div>
+
         <button type="submit" class="botao_cadastro">Cadastrar</button>
 
         <p class="texto_login">
@@ -46,6 +79,62 @@
         </p>
       </form>
     </div>
+
+    <!-- 🔹 FORMULÁRIO PROFESSOR -->
+    <div class="formulario_area oculto" id="formProfessor">
+      <form class="formulario_cadastro">
+        <h2 class="titulo_cadastro">Cadastrar Professor</h2>
+
+        <div class="campo">
+          <input type="text" required placeholder="Nome completo">
+          <label>Nome completo</label>
+        </div>
+
+        <div class="campo">
+          <input type="email" required placeholder="E-mail institucional">
+          <label>E-mail</label>
+        </div>
+
+        <div class="campo">
+          <input type="text" required placeholder="Área de atuação">
+          <label>Área</label>
+        </div>
+
+        <div class="campo">
+          <input type="password" required placeholder="Crie uma senha">
+          <label>Senha</label>
+        </div>
+
+        <button type="submit" class="botao_cadastro">Cadastrar</button>
+
+        <p class="texto_login">
+          Já tem uma conta? <a href="index.html">Entrar</a>
+        </p>
+      </form>
+    </div>
+
   </div>
+
+  <!-- 🔹 SCRIPT -->
+  <script>
+    function mostrarAba(tipo) {
+      const formAluno = document.getElementById("formAluno");
+      const formProfessor = document.getElementById("formProfessor");
+      const abaAluno = document.getElementById("abaAluno");
+      const abaProfessor = document.getElementById("abaProfessor");
+
+      if (tipo === "aluno") {
+        formAluno.classList.remove("oculto");
+        formProfessor.classList.add("oculto");
+        abaAluno.classList.add("ativa");
+        abaProfessor.classList.remove("ativa");
+      } else {
+        formProfessor.classList.remove("oculto");
+        formAluno.classList.add("oculto");
+        abaProfessor.classList.add("ativa");
+        abaAluno.classList.remove("ativa");
+      }
+    }
+  </script>
 </body>
 </html>
