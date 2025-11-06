@@ -11,41 +11,40 @@
     <div class="card_login">
       <!-- ===== LADO ESQUERDO: LOGIN ===== -->
       <div class="login_area">
-        <form action="" class="formulario_login">
+        <form id="loginForm" class="formulario_login">
           <h1 class="titulo_login">Entrar</h1>
 
           <div class="conteudo_login">
             <div class="caixa_login">
               <i class="ri-user-3-line icone_login"></i>
               <div class="entrada_caixa_login">
-                <input type="text" required class="entrada_login" placeholder="Digite seu nome">
-                <label class="rotulo_login">Usuário</label>
+                <input type="email" required id="email" class="entrada_login" placeholder="Digite seu e-mail">
+                <label for="email" class="rotulo_login">E-mail</label>
               </div>
             </div>
 
             <div class="caixa_login">
               <i class="ri-lock-2-line icone_login"></i>
               <div class="entrada_caixa_login">
-                <input type="password" required class="entrada_login" id="senha-login" placeholder="Digite sua senha">
-                <label for="senha-login" class="rotulo_login">Senha</label>
-                <i class="ri-eye-off-line icone_senha"></i>
+                <input type="password" required id="senha" class="entrada_login" placeholder="Digite sua senha">
+                <label for="senha" class="rotulo_login">Senha</label>
+                <i class="ri-eye-off-line icone_senha" id="toggleSenha"></i>
               </div>
             </div>
           </div>
 
           <div class="lembrar_senha_area">
             <div class="grupo_lembrar">
-              <input type="checkbox" name="lembrar" class="entrada_lembrar">
+              <input type="checkbox" name="lembrar" class="entrada_lembrar" id="lembrar">
               <label for="lembrar" class="rotulo_lembrar">Lembrar-me</label>
             </div>
-            <a href="#" class="esqueceu_senha">Esqueceu a senha?</a>
           </div>
 
+          <!-- botão de verdade -->
           <button type="submit" class="botao_login">Entrar</button>
 
-          <p class="registro_login">
-            Não tem uma conta? <a href="Cadastro.html">Cadastre-se</a>
-          </p>
+          <p id="erroLogin" style="color: red; margin-top: 10px; text-align: center;"></p>
+
         </form>
       </div>
 
@@ -55,5 +54,8 @@
       </div>
     </div>
   </div>
+
+  <!-- script de login -->
+  <script src="login.js"></script>
 </body>
 </html>

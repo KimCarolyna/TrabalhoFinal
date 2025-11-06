@@ -1,0 +1,12 @@
+{
+  "admins": [
+    {
+      "email": "Jerffi@nota10.com",
+      "senha": "Jerffinho"
+    },
+    {
+      "email": "Samuel@notaDó.com",
+      "senha": "Samuelmds"
+    }
+  ]
+}

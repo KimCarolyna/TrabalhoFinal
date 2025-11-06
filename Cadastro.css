@@ -14,13 +14,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 40px;
 }
 
-
-
+/* ===== CONTAINER ===== */
 .container {
-  width: 420px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 1100px;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
@@ -28,32 +29,34 @@ body {
   flex-direction: column;
   align-items: center;
   transition: 0.3s ease;
+  padding-bottom: 40px;
 }
 
 /* ===== IMAGEM NO TOPO ===== */
 .imagem_topo {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 280px; /* você pode ajustar esse valor para controlar a altura */
   background: rgba(10, 20, 50, 0.65);
-  padding: 25px 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow: hidden; /* impede que a imagem passe das bordas */
 }
 
 .imagem_ilustracao {
-  width: 260px;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%; /* centraliza e mostra mais da parte inferior */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
-/* ===== ABAS (ALUNO / PROFESSOR) ===== */
+/* ===== ABAS ===== */
 .abas {
   display: flex;
   justify-content: center;
   gap: 10px;
-  padding: 12px 0;
-  background: transparent;
-
+  padding: 15px 0;
 }
 
 .aba {
@@ -66,8 +69,6 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  outline: none; 
-  box-shadow: none; 
 }
 
 .aba:hover {
@@ -82,70 +83,71 @@ body {
 
 /* ===== FORMULÁRIO ===== */
 .formulario_area {
-  width: 100%;
-  padding: 25px 15px 40px;
+  width: 90%;
+  margin-top: 15px;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  justify-content: center;
+}
+
+.formulario_cadastro {
+  width: 100%;
+  max-width: 1000px;
+  color: white;
 }
 
 .titulo_cadastro {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 25px;
   text-align: center;
-  color: #ffffff;
-  letter-spacing: 1px;
+}
+
+/* ===== LINHAS ===== */
+.linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 20px;
 }
 
 /* ===== CAMPOS ===== */
 .campo {
-  width: 100%;
-  margin-bottom: 20px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 }
 
 .campo label {
-  margin-top: 6px;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffff; /* texto branco */
   font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .campo input,
 .campo select {
-  width: 100%;
-  padding: 14px 15px;
-  border: none;
+  color: #fff; /* texto dentro do campo */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  font-size: 15px;
+  padding: 10px;
   outline: none;
-  transition: 0.3s ease;
-  appearance: none;
+  transition: 0.3s;
+}
+
+.campo input::placeholder {
+  color: #fff; /* cor do placeholder */
 }
 
 .campo input:focus,
 .campo select:focus {
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 0 2px #f8a126;
-}
-
-.campo input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.campo select option {
-  color: #000;
+  border-color: #ff9f1c;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* ===== BOTÃO ===== */
 .botao_cadastro {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border: none;
   border-radius: 8px;
   background: linear-gradient(90deg, #f18013, #f8a126);
@@ -154,6 +156,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
+  margin-top: 15px;
 }
 
 .botao_cadastro:hover {
@@ -161,7 +164,7 @@ body {
   opacity: 0.9;
 }
 
-/* ===== TEXTO DE LOGIN ===== */
+/* ===== TEXTO LOGIN ===== */
 .texto_login {
   margin-top: 18px;
   font-size: 14px;
@@ -173,7 +176,6 @@ body {
   color: #f8a126;
   font-weight: 500;
   text-decoration: none;
-  transition: 0.2s;
 }
 
 .texto_login a:hover {
@@ -181,28 +183,19 @@ body {
   color: #ffb24f;
 }
 
-/* ===== FORMULÁRIOS OCULTOS ===== */
+/* ===== FORMULÁRIO OCULTO ===== */
 .oculto {
   display: none;
 }
 
 /* ===== RESPONSIVO ===== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .linha {
+    flex-direction: column;
+  }
+
   .container {
-    max-width: 90%;
-    border-radius: 16px;
-  }
-
-  .imagem_ilustracao {
-    width: 200px;
-  }
-
-  .formulario_area {
-    padding: 25px 15px 35px;
-  }
-
-  .aba {
-    padding: 8px 14px;
-    font-size: 14px;
+    width: 95%;
+    padding: 20px;
   }
 }

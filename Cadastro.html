@@ -11,7 +11,7 @@
 
     <!-- 🔹 IMAGEM NO TOPO -->
     <div class="imagem_topo">
-    <img src="imagens/image.png" alt="Imagem Educacional" class="imagem_ilustracao">
+      <img src="imagens/image.png" alt="Imagem Educacional" class="imagem_ilustracao">
     </div>
 
     <!-- 🔹 Abas de seleção -->
@@ -25,58 +25,67 @@
       <form class="formulario_cadastro">
         <h2 class="titulo_cadastro">Cadastrar Aluno</h2>
 
-        <div class="campo">
-          <input type="text" required placeholder="Digite seu nome completo">
-          <label>Nome completo</label>
+        <!-- LINHA 1 -->
+        <div class="linha">
+          <div class="campo">
+            <input type="text" required placeholder="Digite seu nome completo">
+            <label>Nome completo</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" required placeholder="Digite seu CPF" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+            <label>CPF</label>
+          </div>
         </div>
 
-        <div class="campo">
-          <input type="text" required placeholder="Digite seu CPF" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
-          <label>CPF</label>
-        </div>
-        
-        <div class="campo">
-          <input type="email" required placeholder="Digite seu e-mail">
-          <label>E-mail</label>
+        <!-- LINHA 2 -->
+        <div class="linha">
+          <div class="campo">
+            <input type="email" required placeholder="Digite seu E-mail">
+            <label>E-mail</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" required placeholder="Crie um nome de usuário">
+            <label>Usuário</label>
+          </div>
         </div>
 
-        <div class="campo">
-          <input type="text" required placeholder="Crie um nome de usuário">
-          <label>Usuário</label>
+        <!-- LINHA 3 -->
+        <div class="linha">
+          <div class="campo">
+            <input type="password" required placeholder="Crie uma senha">
+            <label>Senha</label>
+          </div>
+
+          <div class="campo">
+            <input type="date" required>
+            <label>Data de nascimento</label>
+          </div>
         </div>
 
-        <div class="campo">
-          <input type="password" required placeholder="Crie uma senha">
-          <label>Senha</label>
-        </div>
+        <!-- LINHA 4 -->
+        <div class="linha">
+          <div class="campo">
+            <input type="text" required placeholder="Digite sua nacionalidade">
+            <label>Nacionalidade</label>
+          </div>
 
-        <div class="campo">
-          <input type="date" required>
-          <label>Data de nascimento</label>
-        </div>
-
-        <div class="campo">
-          <input type="text" required placeholder="Digite sua nacionalidade">
-          <label>Nacionalidade</label>
-        </div>
-
-        <div class="campo">
-          <select required>
-            <option value="" disabled selected>Selecione sua escolaridade</option>
-            <option value="medio">Ensino Médio Completo</option>
-            <option value="superior">Ensino Superior</option>
-            <option value="pos">Pós-graduação</option>
-            <option value="mestrado">Mestrado</option>
-            <option value="doutorado">Doutorado</option>
-          </select>
-          <label>Escolaridade</label>
+          <div class="campo">
+            <select required>
+              <option value="" disabled selected>Selecione sua escolaridade</option>
+              <option value="medio">Ensino Médio Completo</option>
+              <option value="superior">Ensino Superior</option>
+              <option value="pos">Pós-graduação</option>
+              <option value="mestrado">Mestrado</option>
+              <option value="doutorado">Doutorado</option>
+            </select>
+            <label>Escolaridade</label>
+          </div>
         </div>
 
         <button type="submit" class="botao_cadastro">Cadastrar</button>
 
-        <p class="texto_login">
-          Já tem uma conta? <a href="index.html">Entrar</a>
-        </p>
       </form>
     </div>
 
@@ -85,19 +94,28 @@
       <form class="formulario_cadastro">
         <h2 class="titulo_cadastro">Cadastrar Professor</h2>
 
-        <div class="campo">
-          <input type="text" required placeholder="Nome completo">
-          <label>Nome completo</label>
+        <div class="linha">
+          <div class="campo">
+            <input type="text" required placeholder="Nome completo">
+            <label>Nome completo</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" required placeholder="Digite seu CPF" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+            <label>CPF</label>
+          </div>
         </div>
 
-        <div class="campo">
-          <input type="email" required placeholder="E-mail institucional">
-          <label>E-mail</label>
-        </div>
+        <div class="linha">
+          <div class="campo">
+            <input type="email" required placeholder="E-mail institucional">
+            <label>E-mail</label>
+          </div>
 
-        <div class="campo">
-          <input type="text" required placeholder="Área de atuação">
-          <label>Área</label>
+          <div class="campo">
+            <input type="text" required placeholder="Área de atuação">
+            <label>Área</label>
+          </div>
         </div>
 
         <div class="campo">
@@ -107,12 +125,8 @@
 
         <button type="submit" class="botao_cadastro">Cadastrar</button>
 
-        <p class="texto_login">
-          Já tem uma conta? <a href="index.html">Entrar</a>
-        </p>
       </form>
     </div>
-
   </div>
 
   <!-- 🔹 SCRIPT -->

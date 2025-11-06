@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===== MENU LATERAL ===== -->
+    <aside class="sidebar">
+      <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
+      <nav class="menu">
+        <a href="#" class="menu-item ativo"><i class="ri-dashboard-line"></i> Dashboard</a>
+        <a href="#" class="menu-item"><i class="ri-user-3-line"></i> Professores</a>
+        <a href="#" class="menu-item"><i class="ri-user-2-line"></i> Alunos</a>
+        <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
+      </nav>
+      <button id="botaoSair" class="botao-sair"><i class="ri-logout-box-r-line"></i> Sair</button>
+    </aside>
+
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <main class="conteudo">
+      <header class="topbar">
+        <h1 id="saudacao">Bem-vindo, Administrador!</h1>
+        <p>Gerencie professores, alunos e cadastros do sistema.</p>
+      </header>
+
+      <section class="cards">
+        <div class="card">
+          <i class="ri-user-3-line icone-card"></i>
+          <h3>Professores</h3>
+          <p>Visualizar e gerenciar professores cadastrados.</p>
+        </div>
+
+        <div class="card">
+          <i class="ri-user-2-line icone-card"></i>
+          <h3>Alunos</h3>
+          <p>Visualizar e gerenciar alunos cadastrados.</p>
+        </div>
+
+        <div class="card destaque">
+          <i class="ri-add-line icone-card"></i>
+          <h3>Novo Cadastro</h3>
+          <p>Adicionar novo professor ou aluno.</p>
+          <a href="Cadastro.html" class="botao-card">Ir para Cadastro</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== SCRIPT DE LOGIN E SAÍDA ===== -->
+  <script>
+    // Verifica se há admin logado
+    const admin = JSON.parse(localStorage.getItem("adminLogado"));
+
+    if (!admin) {
+      // Se não estiver logado, volta para o login
+      window.location.href = "index.html";
+    } else {
+      // Mostra o e-mail do admin logado
+      const saudacao = document.getElementById("saudacao");
+      saudacao.textContent = `Bem-vindo, ${admin.email}!`;
+    }
+
+    // Botão de sair
+    const botaoSair = document.getElementById("botaoSair");
+    botaoSair.addEventListener("click", () => {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
