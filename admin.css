@@ -207,3 +207,46 @@ body {
     padding: 30px 20px;
   }
 }
+
+/* ===== SEÇÃO DE ALUNOS ===== */
+.lista-alunos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.aluno-card {
+  background: rgba(255,255,255,0.08);
+  padding: 15px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 200px;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.aluno-card:hover {
+  background: rgba(248,161,38,0.15);
+  transform: scale(1.05);
+}
+
+.info-aluno {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  line-height: 1.8;
+}
+
+.info-aluno.oculto {
+  display: none;
+}
+
+.secao {
+  display: none;
+}
+
+.secao.ativa {
+  display: block;
+}

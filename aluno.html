@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Aluno</title>
+  <link rel="stylesheet" href="aluno.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Menu lateral -->
+    <aside class="sidebar">
+      <div class="perfil">
+        <img src="imagens/Foto_de_Perfil_Pedro.png" alt="Foto do Aluno" id="fotoPerfil" />
+        <h3 id="nomeAluno">Aluno</h3>
+        <p class="emailAluno">aluno@nota10.com</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li id="btnDashboard" class="ativo">🏠 Dashboard</li>
+          <li id="btnDisciplinas">📘 Minhas Disciplinas</li>
+          <li id="btnProfessores">👨‍🏫 Professores</li>
+          <li id="btnNotas">📄 Notas</li>
+        </ul>
+      </nav>
+
+      <button id="sair">Sair</button>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="secao ativa">
+        <h1 id="boasVindas">Bem-vindo, Aluno!</h1>
+        <p class="subtitulo">Aqui estão suas informações e atalhos principais.</p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Turma</h3>
+            <p id="turma">3ºA - Informática</p>
+          </div>
+
+          <div class="card">
+            <h3>Disciplina</h3>
+            <p id="disciplina">Desenvolvimento Web</p>
+          </div>
+
+          <div class="card">
+            <h3>Professor</h3>
+            <p id="professor">Prof. Carlos Andrade</p>
+          </div>
+        </div>
+
+        <div class="extras">
+          <div class="card grande">
+            <h3>📅 Próximas atividades</h3>
+            <p>Nenhuma tarefa pendente no momento.</p>
+          </div>
+          <div class="card grande">
+            <h3>💡 Dica do dia</h3>
+            <p>Pratique um pouco de HTML e CSS todos os dias!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MINHAS DISCIPLINAS -->
+      <section id="disciplinas" class="secao">
+        <h1>Minhas Disciplinas</h1>
+        <p class="subtitulo">Veja abaixo as disciplinas em que você está matriculado:</p>
+        <div class="card grande">
+          <ul>
+            <li>💻 Desenvolvimento Web</li>
+            <li>🧮 Matemática Aplicada</li>
+            <li>🧠 Lógica de Programação</li>
+            <li>💾 Banco de Dados</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PROFESSORES -->
+      <section id="professores" class="secao">
+        <h1>Professores</h1>
+        <p class="subtitulo">Conheça os professores responsáveis pelas suas disciplinas:</p>
+        <div class="card grande">
+          <ul>
+            <li>Prof. Carlos Andrade – Desenvolvimento Web</li>
+            <li>Prof. Mariana Lopes – Matemática Aplicada</li>
+            <li>Prof. João Silva – Banco de Dados</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- NOTAS -->
+      <section id="notas" class="secao">
+        <h1>Notas</h1>
+        <p class="subtitulo">Confira suas notas recentes:</p>
+        <div class="card grande">
+          <table style="width:100%; color:#fff; border-collapse:collapse;">
+            <tr style="color:#f8a126;">
+              <th style="text-align:left;">Disciplina</th>
+              <th>Nota</th>
+            </tr>
+            <tr>
+              <td>Desenvolvimento Web</td>
+              <td>9.5</td>
+            </tr>
+            <tr>
+              <td>Banco de Dados</td>
+              <td>8.7</td>
+            </tr>
+            <tr>
+              <td>Lógica de Programação</td>
+              <td>9.0</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Alternar entre seções do painel
+    const secoes = document.querySelectorAll(".secao");
+    const botoes = document.querySelectorAll(".sidebar li");
+
+    botoes.forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Remove classe ativa dos botões
+        botoes.forEach(b => b.classList.remove("ativo"));
+        btn.classList.add("ativo");
+
+        // Esconde todas as seções
+        secoes.forEach(sec => sec.classList.remove("ativa"));
+
+        // Mostra a seção correspondente
+        if (btn.id === "btnDashboard") document.getElementById("dashboard").classList.add("ativa");
+        if (btn.id === "btnDisciplinas") document.getElementById("disciplinas").classList.add("ativa");
+        if (btn.id === "btnProfessores") document.getElementById("professores").classList.add("ativa");
+        if (btn.id === "btnNotas") document.getElementById("notas").classList.add("ativa");
+      });
+    });
+
+    // Botão de sair
+    const botaoSair = document.getElementById("sair");
+    botaoSair.addEventListener("click", () => {
+      localStorage.removeItem("alunoLogado");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

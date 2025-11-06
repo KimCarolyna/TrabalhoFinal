@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerenciar Alunos</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- ===== MENU LATERAL ===== -->
+    <aside class="sidebar">
+      <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
+      <nav class="menu">
+        <a href="aluno.html" class="menu-item"><i class="ri-dashboard-line"></i> Dashboard</a>
+        <a href="#" class="menu-item ativo"><i class="ri-user-2-line"></i> Alunos</a>
+        <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
+      </nav>
+      <button id="botaoSair" class="botao-sair"><i class="ri-logout-box-r-line"></i> Sair</button>
+    </aside>
+
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <main class="conteudo">
+      <header class="topbar">
+        <h1>Gerenciar Alunos</h1>
+        <p>Visualize, edite ou exclua os alunos cadastrados no sistema.</p>
+      </header>
+
+      <section class="secao ativa">
+        <table class="tabela-alunos">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Turma</th>
+              <th>Disciplina</th>
+              <th>Professor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaAlunos"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    // ==== DADOS DE EXEMPLO ====
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [
+      { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web", professor: "Carlos Andrade" },
+      { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados", professor: "Ana Lima" },
+      { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação", professor: "João Melo" }
+    ];
+
+    const tabela = document.getElementById("tabelaAlunos");
+
+    function atualizarTabela() {
+      tabela.innerHTML = "";
+      alunos.forEach((aluno, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${aluno.nome}</td>
+          <td>${aluno.turma}</td>
+          <td>${aluno.disciplina}</td>
+          <td>${aluno.professor}</td>
+          <td>
+            <button class="btn-editar" onclick="editarAluno(${index})"><i class="ri-pencil-line"></i></button>
+            <button class="btn-excluir" onclick="excluirAluno(${index})"><i class="ri-delete-bin-line"></i></button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    function editarAluno(index) {
+      const novoNome = prompt("Novo nome do aluno:", alunos[index].nome);
+      if (novoNome) {
+        alunos[index].nome = novoNome;
+        salvarAlunos();
+        atualizarTabela();
+      }
+    }
+
+    function excluirAluno(index) {
+      if (confirm(`Excluir ${alunos[index].nome}?`)) {
+        alunos.splice(index, 1);
+        salvarAlunos();
+        atualizarTabela();
+      }
+    }
+
+    function salvarAlunos() {
+      localStorage.setItem("alunos", JSON.stringify(alunos));
+    }
+
+    atualizarTabela();
+
+    // ===== BOTÃO SAIR =====
+    document.getElementById("botaoSair").addEventListener("click", () => {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

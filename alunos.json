@@ -1,0 +1,20 @@
+{
+  "alunos": [
+    {
+      "email": "pedro@nota10.com",
+      "senha": "123456",
+      "nome": "Pedro Alves",
+      "turma": "3ºA",
+      "disciplina": "Matemática",
+      "professor": "Samuel Mendes"
+    },
+    {
+      "email": "lara@nota10.com",
+      "senha": "654321",
+      "nome": "Lara Costa",
+      "turma": "2ºB",
+      "disciplina": "História",
+      "professor": "Jerffi Duarte"
+    }
+  ]
+}

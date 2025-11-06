@@ -6,32 +6,41 @@ document.getElementById("loginForm").addEventListener("submit", async function (
   const erroLogin = document.getElementById("erroLogin");
 
   try {
-    // Lê o arquivo JSON com os administradores
-    const resposta = await fetch("admins.json");
-    const dados = await resposta.json();
-
-    // Verifica se existe um admin com o e-mail e senha digitados
-    const adminValido = dados.admins.find(
+    // === Verifica ADMINISTRADORES ===
+    const respAdmins = await fetch("admins.json");
+    const dadosAdmins = await respAdmins.json();
+    const adminValido = dadosAdmins.admins.find(
       (admin) => admin.email === email && admin.senha === senha
     );
 
     if (adminValido) {
-      // Salva o login no localStorage
-      localStorage.setItem("adminLogado", JSON.stringify({ email }));
-
-      // Redireciona para o painel administrativo
+      localStorage.setItem("adminLogado", JSON.stringify(adminValido));
       window.location.href = "admin.html";
-    } else {
-      // Mostra mensagem de erro
-      erroLogin.textContent = "E-mail ou senha incorretos!";
+      return; // encerra a função
     }
+
+    // === Verifica ALUNOS ===
+    const respAlunos = await fetch("alunos.json");
+    const dadosAlunos = await respAlunos.json();
+    const alunoValido = dadosAlunos.alunos.find(
+      (aluno) => aluno.email === email && aluno.senha === senha
+    );
+
+    if (alunoValido) {
+      localStorage.setItem("alunoLogado", JSON.stringify(alunoValido));
+      window.location.href = "aluno.html";
+      return;
+    }
+
+    // Caso não encontre em nenhum JSON:
+    erroLogin.textContent = "E-mail ou senha incorretos!";
   } catch (erro) {
-    console.error("Erro ao carregar admins.json:", erro);
+    console.error("Erro ao carregar dados:", erro);
     erroLogin.textContent = "Erro no servidor. Tente novamente mais tarde.";
   }
 });
 
-// Mostrar / ocultar senha
+// === Mostrar / ocultar senha ===
 const toggleSenha = document.getElementById("toggleSenha");
 const campoSenha = document.getElementById("senha");
 

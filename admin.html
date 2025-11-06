@@ -12,52 +12,75 @@
 
     <!-- ===== MENU LATERAL ===== -->
     <aside class="sidebar">
-      <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
-      <nav class="menu">
-        <a href="#" class="menu-item ativo"><i class="ri-dashboard-line"></i> Dashboard</a>
-        <a href="#" class="menu-item"><i class="ri-user-3-line"></i> Professores</a>
-        <a href="#" class="menu-item"><i class="ri-user-2-line"></i> Alunos</a>
-        <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
-      </nav>
-      <button id="botaoSair" class="botao-sair"><i class="ri-logout-box-r-line"></i> Sair</button>
-    </aside>
+  <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
+  <nav class="menu">
+    <a href="#" class="menu-item ativo"><i class="ri-dashboard-line"></i> Dashboard</a>
+    <a href="#" class="menu-item"><i class="ri-user-3-line"></i> Professores</a>
+    <a href="#" class="menu-item"><i class="ri-user-2-line"></i> Alunos</a>
+    <!-- CORRIGIDO: o link agora aponta para Cadastro.html -->
+    <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
+  </nav>
+  <button id="botaoSair" class="botao-sair"><i class="ri-logout-box-r-line"></i> Sair</button>
+</aside>
 
     <!-- ===== CONTEÚDO PRINCIPAL ===== -->
     <main class="conteudo">
-      <header class="topbar">
-        <h1 id="saudacao">Bem-vindo, Administrador!</h1>
-        <p>Gerencie professores, alunos e cadastros do sistema.</p>
-      </header>
+  <header class="topbar">
+    <h1 id="saudacao">Bem-vindo, Administrador!</h1>
+    <p>Gerencie professores, alunos e cadastros do sistema.</p>
+  </header>
 
-      <section class="cards">
-        <div class="card">
-          <i class="ri-user-3-line icone-card"></i>
-          <h3>Professores</h3>
-          <p>Visualizar e gerenciar professores cadastrados.</p>
-        </div>
+  <!-- ===== DASHBOARD PADRÃO ===== -->
+  <section id="dashboard" class="secao ativa">
+    <div class="cards">
+      <div class="card destaque" onclick="window.location.href='Edicao.html'">
+  <i class="ri-user-2-line icone-card"></i>
+  <h3>Alunos</h3>
+  <p>Visualizar e gerenciar alunos cadastrados.</p>
+</div>
 
-        <div class="card">
-          <i class="ri-user-2-line icone-card"></i>
-          <h3>Alunos</h3>
-          <p>Visualizar e gerenciar alunos cadastrados.</p>
-        </div>
+      <div class="card">
+        <i class="ri-user-2-line icone-card"></i>
+        <h3>Alunos</h3>
+        <p>Visualizar e gerenciar alunos cadastrados.</p>
+      </div>
 
-        <div class="card destaque">
-          <i class="ri-add-line icone-card"></i>
-          <h3>Novo Cadastro</h3>
-          <p>Adicionar novo professor ou aluno.</p>
-          <a href="Cadastro.html" class="botao-card">Ir para Cadastro</a>
-        </div>
-      </section>
-    </main>
+      <div class="card destaque">
+        <i class="ri-add-line icone-card"></i>
+        <h3>Novo Cadastro</h3>
+        <p>Adicionar novo professor ou aluno.</p>
+        <a href="Cadastro.html" class="botao-card">Ir para Cadastro</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SEÇÃO DE ALUNOS ===== -->
+  <section id="alunos" class="secao">
+    <h2>Lista de Alunos</h2>
+    <p>Selecione um aluno para visualizar seus dados.</p>
+
+    <div id="listaAlunos" class="lista-alunos">
+      <!-- Alunos gerados dinamicamente -->
+    </div>
+
+    <div id="infoAluno" class="info-aluno oculto">
+      <h3 id="nomeAlunoInfo"></h3>
+      <p><strong>Turma:</strong> <span id="turmaAluno"></span></p>
+      <p><strong>Disciplina:</strong> <span id="disciplinaAluno"></span></p>
+      <p><strong>Professor:</strong> <span id="professorAluno"></span></p>
+      <h4>Notas:</h4>
+      <ul id="notasAluno"></ul>
+    </div>
+  </section>
+</main>
   </div>
 
   <!-- ===== SCRIPT DE LOGIN E SAÍDA ===== -->
   <script>
     // Verifica se há admin logado
-    const admin = JSON.parse(localStorage.getItem("adminLogado"));
+    const adminLogado = JSON.parse(localStorage.getItem("adminLogado"));
 
-    if (!admin) {
+    if (!adminLogado) {
       // Se não estiver logado, volta para o login
       window.location.href = "index.html";
     } else {
@@ -73,5 +96,99 @@
       window.location.href = "index.html";
     });
   </script>
+  <script>
+  // ==== CONTROLE DE LOGIN ====
+    const admin = JSON.parse(localStorage.getItem("adminLogado"));
+    if (!admin) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("saudacao").textContent = `Bem-vindo, ${admin.email}!`;
+    }
+
+    document.getElementById("botaoSair").addEventListener("click", () => {
+      localStorage.removeItem("adminLogado");
+      window.location.href = "index.html";
+    });
+
+    // ==== MENU DE NAVEGAÇÃO ====
+    const menuItens = document.querySelectorAll(".menu-item");
+    const secoes = document.querySelectorAll(".secao");
+
+    menuItens.forEach((item) => {
+  item.addEventListener("click", (e) => {
+    const texto = item.textContent.trim();
+
+    // Se o item for "Cadastrar", deixa o link funcionar normalmente
+    if (texto.includes("Cadastrar")) return;
+
+    e.preventDefault();
+    menuItens.forEach(i => i.classList.remove("ativo"));
+    item.classList.add("ativo");
+
+    secoes.forEach(sec => sec.classList.remove("ativa"));
+    if (texto.includes("Dashboard")) document.getElementById("dashboard").classList.add("ativa");
+    if (texto.includes("Alunos")) document.getElementById("alunos").classList.add("ativa");
+  });
+});
+
+    // ==== DADOS DE ALUNOS ====
+    const alunos = [
+      {
+        nome: "Pedro Silva",
+        turma: "3ºA - Informática",
+        disciplina: "Desenvolvimento Web",
+        professor: "Carlos Andrade",
+        notas: [9.5, 8.7, 9.0]
+      },
+      {
+        nome: "Maria Souza",
+        turma: "3ºB - Redes",
+        disciplina: "Banco de Dados",
+        professor: "Ana Lima",
+        notas: [8.9, 9.3, 9.1]
+      },
+      {
+        nome: "Lucas Pereira",
+        turma: "2ºA - Informática",
+        disciplina: "Lógica de Programação",
+        professor: "João Melo",
+        notas: [8.0, 8.4, 8.6]
+      }
+    ];
+
+    // ==== LISTA DE ALUNOS ====
+    const listaAlunos = document.getElementById("listaAlunos");
+    const infoAluno = document.getElementById("infoAluno");
+
+    alunos.forEach(aluno => {
+      const div = document.createElement("div");
+      div.classList.add("aluno-card");
+      div.textContent = aluno.nome;
+      div.addEventListener("click", () => mostrarInfo(aluno));
+      listaAlunos.appendChild(div);
+    });
+
+    // ==== MOSTRAR DETALHES ====
+    function mostrarInfo(aluno) {
+      document.getElementById("nomeAlunoInfo").textContent = aluno.nome;
+      document.getElementById("turmaAluno").textContent = aluno.turma;
+      document.getElementById("disciplinaAluno").textContent = aluno.disciplina;
+      document.getElementById("professorAluno").textContent = aluno.professor;
+
+      const tbody = document.getElementById("notasAluno");
+      tbody.innerHTML = "";
+
+      aluno.notas.forEach((nota, index) => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+          <td>${aluno.disciplina}</td>
+          <td style="text-align: center;">${nota}</td>
+        `;
+        tbody.appendChild(linha);
+      });
+
+      infoAluno.classList.remove("oculto");
+    }
+</script>
 </body>
 </html>
