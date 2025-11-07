@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Acadêmica</title>
+
+    <!-- Remixicon para os ícones -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* ===== FUNDO ===== */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("imagens/Fundo_Cadastro.png") no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .card_login {
+            display: flex;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== LADO ESQUERDO: LOGIN ===== */
+        .login_area {
+            flex: 1;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .titulo_login {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f8a126;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .conteudo_login .caixa_login {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .entrada_caixa_login {
+            flex: 1;
+            position: relative;
+        }
+
+        .entrada_login {
+            width: 100%;
+            padding: 12px 40px 12px 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .icone_login {
+            position: absolute;
+            left: 10px;
+            font-size: 1.3rem;
+            color: #f8a126;
+        }
+
+        .icone_senha {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #f8a126;
+            font-size: 1.2rem;
+        }
+
+        .rotulo_login {
+            display: none;
+        }
+
+        .lembrar_senha_area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .grupo_lembrar {
+            display: flex;
+            align-items: center;
+        }
+
+        .entrada_lembrar {
+            margin-right: 8px;
+        }
+
+        .botao_login {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(90deg, #f18013, #f8a126);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao_login:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        #erroLogin {
+            margin-top: 10px;
+            color: #ff4c4c;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* ===== LADO DIREITO: IMAGEM ===== */
+        .imagem_area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .imagem_fundo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .card_login {
+                flex-direction: column;
+            }
+
+            .imagem_area {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card_login">
+            <!-- ===== LADO ESQUERDO: LOGIN ===== -->
+            <div class="login_area">
+                <form id="loginForm" class="formulario_login">
+                    <h1 class="titulo_login">Entrar</h1>
+
+                    <div class="conteudo_login">
+                        <div class="caixa_login">
+                            <i class="ri-user-3-line icone_login"></i>
+                            <div class="entrada_caixa_login">
+                                <input type="email" required id="email" class="entrada_login" placeholder="Digite seu e-mail">
+                                <label for="email" class="rotulo_login">E-mail</label>
+                            </div>
+                        </div>
+
+                        <div class="caixa_login">
+                            <i class="ri-lock-2-line icone_login"></i>
+                            <div class="entrada_caixa_login">
+                                <input type="password" required id="senha" class="entrada_login" placeholder="Digite sua senha">
+                                <label for="senha" class="rotulo_login">Senha</label>
+                                <i class="ri-eye-off-line icone_senha" id="toggleSenha"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lembrar_senha_area">
+                        <div class="grupo_lembrar">
+                            <input type="checkbox" name="lembrar" class="entrada_lembrar" id="lembrar">
+                            <label for="lembrar" class="rotulo_lembrar">Lembrar-me</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="botao_login">Entrar</button>
+
+                    <p id="erroLogin"></p>
+
+                </form>
+            </div>
+
+            <!-- ===== LADO DIREITO: IMAGEM ===== -->
+            <div class="imagem_area">
+                <img src="imagens/Lateral_Educacional.png" alt="Fundo Educacional" class="imagem_fundo">
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPT DE LOGIN ===== -->
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+            const erroLogin = document.getElementById("erroLogin");
+
+            try {
+                const respAdmins = await fetch("admins.json");
+                const dadosAdmins = await respAdmins.json();
+                const adminValido = dadosAdmins.admins.find(
+                    (admin) => admin.email === email && admin.senha === senha
+                );
+
+                if (adminValido) {
+                    localStorage.setItem("adminLogado", JSON.stringify(adminValido));
+                    window.location.href = "admin.html";
+                    return;
+                }
+
+                const respAlunos = await fetch("alunos.json");
+                const dadosAlunos = await respAlunos.json();
+                const alunoValido = dadosAlunos.alunos.find(
+                    (aluno) => aluno.email === email && aluno.senha === senha
+                );
+
+                if (alunoValido) {
+                    localStorage.setItem("alunoLogado", JSON.stringify(alunoValido));
+                    window.location.href = "aluno.html";
+                    return;
+                }
+
+                erroLogin.textContent = "E-mail ou senha incorretos!";
+            } catch (erro) {
+                console.error("Erro ao carregar dados:", erro);
+                erroLogin.textContent = "Erro no servidor. Tente novamente mais tarde.";
+            }
+        });
+
+        const toggleSenha = document.getElementById("toggleSenha");
+        const campoSenha = document.getElementById("senha");
+
+        toggleSenha.addEventListener("click", () => {
+            const tipo = campoSenha.getAttribute("type");
+            if (tipo === "password") {
+                campoSenha.setAttribute("type", "text");
+                toggleSenha.classList.remove("ri-eye-off-line");
+                toggleSenha.classList.add("ri-eye-line");
+            } else {
+                campoSenha.setAttribute("type", "password");
+                toggleSenha.classList.remove("ri-eye-line");
+                toggleSenha.classList.add("ri-eye-off-line");
+            }
+        });
+    </script>
+</body>
+</html>

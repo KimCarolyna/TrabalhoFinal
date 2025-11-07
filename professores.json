@@ -1,0 +1,32 @@
+{
+  "professores": [
+    {
+      "email": "ana@nota10.com",
+      "senha": "123456",
+      "nome": "Ana Souza",
+      "disciplinas": ["Desenvolvimento Web", "Banco de Dados"],
+      "turmas": ["3ºA - Informática", "3ºB - Informática"]
+    },
+    {
+      "email": "carlos@nota10.com",
+      "senha": "654321",
+      "nome": "Carlos Andrade",
+      "disciplinas": ["Lógica de Programação", "Estruturas de Dados"],
+      "turmas": ["2ºA - Informática"]
+    },
+    {
+      "email": "mariana@nota10.com",
+      "senha": "789123",
+      "nome": "Mariana Lopes",
+      "disciplinas": ["Matemática Aplicada", "Estatística"],
+      "turmas": ["1ºB - Matemática", "2ºB - Matemática"]
+    },
+    {
+      "email": "joao@nota10.com",
+      "senha": "321789",
+      "nome": "João Silva",
+      "disciplinas": ["Banco de Dados", "Engenharia de Software"],
+      "turmas": ["3ºA - Informática", "3ºC - Sistemas"]
+    }
+  ]
+}

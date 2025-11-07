@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Professor</title>
+
+  <!-- Ícones Remix e CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="professor.css" />
+</head>
+<body>
+  <!-- ===== BARRA SUPERIOR ===== -->
+  <header class="barra-superior">
+    <div class="logo">
+      <i class="ri-graduation-cap-line"></i>
+      <span>Painel do Professor</span>
+    </div>
+    <nav class="menu-topo">
+      <ul>
+        <li class="ativo" onclick="mostrar('dashboard')"><i class="ri-dashboard-line"></i> Dashboard</li>
+        <li onclick="mostrar('disciplinas')"><i class="ri-book-open-line"></i> Disciplinas</li>
+        <li onclick="mostrar('turmas')"><i class="ri-group-line"></i> Turmas</li>
+        <li onclick="mostrar('notas')"><i class="ri-file-list-3-line"></i> Lançar Notas</li>
+        <li onclick="mostrar('relatorios')"><i class="ri-bar-chart-2-line"></i> Relatórios</li>
+        <li onclick="mostrar('calendario')"><i class="ri-calendar-line"></i> Calendário</li>
+        <li onclick="mostrar('mensagens')"><i class="ri-mail-line"></i> Mensagens</li>
+        <li onclick="mostrar('perfil')"><i class="ri-user-settings-line"></i> Perfil</li>
+      </ul>
+    </nav>
+    <button class="logout" onclick="logout()">
+      <i class="ri-logout-box-line"></i> Sair
+    </button>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="conteudo-principal">
+    <section class="cabecalho">
+      <h1>Bem-vindo(a), <span id="nomeProfessor">Prof. Ana Souza</span>!</h1>
+      <p>Gerencie suas disciplinas, turmas e notas com praticidade.</p>
+    </section>
+
+    <section class="dashboard-professor">
+      <div class="card" onclick="mostrar('notas')">
+        <i class="ri-file-list-3-line"></i>
+        <h2>Lançar Notas</h2>
+        <p>Registre e atualize as notas dos alunos.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('turmas')">
+        <i class="ri-group-line"></i>
+        <h2>Gerenciar Turmas</h2>
+        <p>Visualize e organize suas turmas.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('disciplinas')">
+        <i class="ri-book-open-line"></i>
+        <h2>Minhas Disciplinas</h2>
+        <p>Acesse e edite suas disciplinas ativas.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('relatorios')">
+        <i class="ri-bar-chart-2-line"></i>
+        <h2>Relatórios</h2>
+        <p>Veja o desempenho dos alunos por turma.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('mensagens')">
+        <i class="ri-mail-line"></i>
+        <h2>Mensagens</h2>
+        <p>Envie e receba mensagens entre alunos e administração.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('calendario')">
+        <i class="ri-calendar-line"></i>
+        <h2>Calendário</h2>
+        <p>Visualize datas de provas e eventos acadêmicos.</p>
+      </div>
+
+      <div class="card" onclick="mostrar('perfil')">
+        <i class="ri-user-settings-line"></i>
+        <h2>Perfil</h2>
+        <p>Atualize suas informações pessoais e senha.</p>
+      </div>
+    </section>
+
+    <!-- ===== ÁREA DAS PÁGINAS (OCULTA INICIALMENTE) ===== -->
+
+<section id="disciplinas" class="pagina oculto">
+  <h2>Minhas Disciplinas</h2>
+  <p>Aqui você pode visualizar e editar suas disciplinas.</p>
+</section>
+
+<section id="turmas" class="pagina oculto">
+  <h2>Gerenciar Turmas</h2>
+  <p>Gerencie suas turmas e alunos matriculados.</p>
+</section>
+
+<section id="notas" class="pagina oculto">
+  <h2>Lançar Notas</h2>
+  <p>Registre e atualize notas por disciplina e turma.</p>
+</section>
+
+<section id="relatorios" class="pagina oculto">
+  <h2>Relatórios</h2>
+  <p>Relatórios de desempenho e progresso por turma.</p>
+</section>
+
+<section id="calendario" class="pagina oculto">
+  <h2>Calendário Acadêmico</h2>
+  <p>Veja datas de provas, eventos e reuniões.</p>
+</section>
+
+<section id="mensagens" class="pagina oculto">
+  <h2>Mensagens</h2>
+  <p>Envie mensagens para alunos e administração.</p>
+</section>
+
+<section id="perfil" class="pagina oculto">
+  <h2>Perfil do Professor</h2>
+  <p>Atualize seus dados pessoais e senha.</p>
+</section>
+
+  </main>
+
+  <script>
+  document.getElementById("nomeProfessor").textContent =
+    localStorage.getItem("nomeUsuario") || "Prof. Ana Souza";
+
+  function mostrar(pagina) {
+    // Esconde dashboard
+    document.querySelector(".dashboard-professor").style.display = (pagina === "dashboard" ? "grid" : "none");
+
+    // Esconde todas as páginas internas
+    document.querySelectorAll(".pagina").forEach(sec => sec.classList.add("oculto"));
+
+    // Atualiza menu ativo
+    document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
+
+    // Se for dashboard, só ativa o primeiro menu
+    if (pagina === "dashboard") {
+      document.querySelector(".menu-topo ul li:first-child").classList.add("ativo");
+      return;
+    }
+
+    // Mostra a página escolhida
+    document.getElementById(pagina).classList.remove("oculto");
+
+    // Ativa highlight do menu correspondente
+    document.querySelector(`[onclick="mostrar('${pagina}')"]`).classList.add("ativo");
+  }
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "index.html";
+  }
+</script>
+</body>
+</html>

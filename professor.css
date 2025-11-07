@@ -1,0 +1,167 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== CORES ===== */
+:root {
+  --bg-azul-escuro: #081731;
+  --bg-azul-gradiente: linear-gradient(180deg, #0d204f, #1a3d7c);
+  --destaque: #f8a126;
+  --texto: #ffffff;
+}
+
+/* ===== FUNDO GERAL ===== */
+body {
+  background: url("imagens/Fundo_Professor.png") no-repeat center center fixed;
+  background-size: cover;
+  color: var(--texto);
+  min-height: 100vh;
+  backdrop-filter: blur(2px);
+}
+
+/* ===== BARRA SUPERIOR ===== */
+.barra-superior {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* ===== MENU TOPO ===== */
+.menu-topo ul {
+  display: flex;
+  list-style: none;
+  gap: 28px;
+}
+
+.menu-topo ul li {
+  cursor: pointer;
+  opacity: 0.9;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-topo ul li:hover,
+.menu-topo ul li.ativo {
+  color: var(--destaque);
+  opacity: 1;
+}
+
+/* Botão Sair */
+.logout {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 7px 16px;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout:hover {
+  background: var(--destaque);
+  border-color: var(--destaque);
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
+.conteudo-principal {
+  padding: 120px 60px 50px;
+}
+
+/* ===== CABEÇALHO ===== */
+.cabecalho {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cabecalho h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ===== DASHBOARD CARDS ===== */
+.dashboard-professor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: 0.3s;
+  box-shadow: 0 0 18px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+
+.card i {
+  font-size: 2.6rem;
+  color: var(--destaque);
+  margin-bottom: 12px;
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.card p {
+  opacity: 0.85;
+  margin-top: 6px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 22px rgba(248,161,38,0.5);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  .menu-topo ul { display: none; }
+  .conteudo-principal { padding: 110px 20px; }
+  .dashboard-professor { gap: 20px; }
+}
+
+/* ===== SEÇÕES INTERNAS (PAINÉIS) ===== */
+.pagina {
+  background: rgba(255,255,255,0.08);
+  padding: 30px;
+  border-radius: 18px;
+  margin-top: 30px;
+  box-shadow: 0 0 18px rgba(0,0,0,0.35);
+  animation: fadeIn 0.4s ease;
+}
+
+.oculto {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

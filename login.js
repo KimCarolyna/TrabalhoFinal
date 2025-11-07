@@ -16,7 +16,20 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     if (adminValido) {
       localStorage.setItem("adminLogado", JSON.stringify(adminValido));
       window.location.href = "admin.html";
-      return; // encerra a função
+      return;
+    }
+
+    // === Verifica PROFESSORES ===
+    const respProfs = await fetch("professores.json");
+    const dadosProfs = await respProfs.json();
+    const professorValido = dadosProfs.professores.find(
+      (prof) => prof.email === email && prof.senha === senha
+    );
+
+    if (professorValido) {
+      localStorage.setItem("professorLogado", JSON.stringify(professorValido));
+      window.location.href = "professor.html";
+      return;
     }
 
     // === Verifica ALUNOS ===
