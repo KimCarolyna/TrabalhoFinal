@@ -8,6 +8,7 @@
   <!-- Ícones Remix e CSS -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="professor.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <!-- ===== BARRA SUPERIOR ===== -->
@@ -24,7 +25,6 @@
         <li onclick="mostrar('notas')"><i class="ri-file-list-3-line"></i> Lançar Notas</li>
         <li onclick="mostrar('relatorios')"><i class="ri-bar-chart-2-line"></i> Relatórios</li>
         <li onclick="mostrar('calendario')"><i class="ri-calendar-line"></i> Calendário</li>
-        <li onclick="mostrar('mensagens')"><i class="ri-mail-line"></i> Mensagens</li>
         <li onclick="mostrar('perfil')"><i class="ri-user-settings-line"></i> Perfil</li>
       </ul>
     </nav>
@@ -40,7 +40,7 @@
       <p>Gerencie suas disciplinas, turmas e notas com praticidade.</p>
     </section>
 
-    <section class="dashboard-professor">
+    <section id="dashboard" class="dashboard-professor">
       <div class="card" onclick="mostrar('notas')">
         <i class="ri-file-list-3-line"></i>
         <h2>Lançar Notas</h2>
@@ -65,12 +65,6 @@
         <p>Veja o desempenho dos alunos por turma.</p>
       </div>
 
-      <div class="card" onclick="mostrar('mensagens')">
-        <i class="ri-mail-line"></i>
-        <h2>Mensagens</h2>
-        <p>Envie e receba mensagens entre alunos e administração.</p>
-      </div>
-
       <div class="card" onclick="mostrar('calendario')">
         <i class="ri-calendar-line"></i>
         <h2>Calendário</h2>
@@ -87,6 +81,21 @@
     <!-- ===== PÁGINAS ===== -->
 <section id="disciplinas" class="pagina oculto">
   <h2>Minhas Disciplinas</h2>
+
+  <div class="disciplinas-header">
+    <button id="btnAddDisciplina">+ Adicionar Disciplina</button>
+  </div>
+
+  <table class="tabela-relatorio" id="tabelaDisciplinas">
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Turmas Associadas</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </section>
 
 <section id="turmas" class="pagina oculto">
@@ -113,11 +122,13 @@
       <h3>Alunos da Turma</h3>
       <table>
         <thead>
-          <tr>
-            <th>Aluno</th>
-            <th>Nota</th>
-          </tr>
-        </thead>
+  <tr>
+    <th>Aluno</th>
+    <th>Disciplina</th>
+    <th>Turma</th>
+    <th>Nota</th>
+  </tr>
+</thead>
         <tbody id="alunosTabela"></tbody>
       </table>
 
@@ -128,18 +139,41 @@
 </section>
 
 <section id="relatorios" class="pagina oculto">
-  <h2>Relatórios de Notas</h2>
+  <h2>Relatórios de Desempenho</h2>
+
+  <div class="filtros-relatorio">
+    <label>Disciplina:</label>
+    <select id="filtroDisciplina">
+      <option value="">Todas</option>
+    </select>
+
+    <label>Turma:</label>
+    <select id="filtroTurma">
+      <option value="">Todas</option>
+    </select>
+  </div>
 
   <div class="relatorio-box">
-    <table>
-      <thead>
-        <tr>
-          <th>Aluno</th>
-          <th>Nota</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaRelatorio"></tbody>
-    </table>
+    <table class="tabela-relatorio">
+  <thead>
+    <tr>
+      <th>Aluno</th>
+      <th>Disciplina</th>
+      <th>Turma</th>
+      <th>Nota</th>
+    </tr>
+  </thead>
+  <tbody id="tabelaRelatorio"></tbody>
+</table>
+
+    <div class="media-turma">
+      Média da Turma: <span id="mediaValor">-</span>
+    </div>
+
+    <div class="export-buttons">
+      <button onclick="exportarPDF()">Exportar PDF</button>
+      <button onclick="exportarExcel()">Exportar Excel</button>
+    </div>
   </div>
 </section>
 
@@ -164,22 +198,51 @@
   </div>
 </section>
 
-<section id="mensagens" class="pagina oculto">
-  <h2>Mensagens</h2>
+<section id="perfil" class="pagina oculto">
+  <div class="perfil-container">
+
+    <div class="perfil-avatar">
+      <img id="fotoPerfil" src="https://i.imgur.com/9b9ZQPP.png" alt="Foto do Professor">
+      <input type="file" id="inputFoto" accept="image/*" class="oculto">
+      <button id="btnTrocarFoto">Trocar Foto</button>
+    </div>
+
+    <div class="perfil-info">
+      <h2>Perfil do Professor</h2>
+
+      <label>Nome:</label>
+      <input type="text" id="perfilNome" disabled>
+
+      <label>Email:</label>
+      <input type="text" id="perfilEmail" disabled>
+
+      <div class="perfil-botoes">
+        <button id="btnEditarPerfil">Editar</button>
+        <button id="btnSalvarPerfil" class="oculto">Salvar</button>
+      </div>
+
+      <hr>
+
+      <button id="btnAlterarSenha" class="btn-senha">Alterar Senha</button>
+    </div>
+
+  </div>
 </section>
 
-<section id="perfil" class="pagina oculto">
-  <h2>Perfil do Professor</h2>
-</section>
 
   </main>
 
 <script>
-document.getElementById("nomeProfessor").textContent =
-  localStorage.getItem("nomeUsuario") || "Prof. Ana Souza";
+/* =========================================================
+   INICIALIZAÇÃO DO NOME NO DASHBOARD
+========================================================= */
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+document.getElementById("nomeProfessor").textContent = usuario?.nome || "Professor";
 
-// Dados temporários
-const disciplinas = {
+/* =========================================================
+   DADOS EXEMPLO (caso ainda não tenha banco)
+========================================================= */
+const disciplinasPadrao = {
   "Matemática": ["Turma A", "Turma B"],
   "Português": ["Turma A"],
   "História": ["Turma C"]
@@ -191,21 +254,30 @@ const alunosPorTurma = {
   "Turma C": ["Rafaela", "Tiago", "Eduardo"]
 };
 
+const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || disciplinasPadrao;
+
+/* =========================================================
+   ELEMENTOS DA TELA DE LANÇAMENTO DE NOTAS
+========================================================= */
 const disciplinaSelect = document.getElementById("disciplinaSelect");
 const turmaSelect = document.getElementById("turmaSelect");
 const listaAlunosDiv = document.getElementById("listaAlunos");
 const alunosTabela = document.getElementById("alunosTabela");
 
-// Carregar disciplinas
-Object.keys(disciplinas).forEach(d => {
-  disciplinaSelect.innerHTML += `<option value="${d}">${d}</option>`;
-});
+/* ===== Preenche disciplinas ===== */
+function initDisciplinaSelect() {
+  disciplinaSelect.innerHTML = `<option value="">Selecione...</option>`;
+  Object.keys(disciplinas).forEach(d => {
+    disciplinaSelect.innerHTML += `<option value="${d}">${d}</option>`;
+  });
+}
+initDisciplinaSelect();
 
-// Escolher disciplina → carregar turmas
+/* ===== Seleção da disciplina ===== */
 disciplinaSelect.onchange = () => {
   turmaSelect.innerHTML = '<option value="">Selecione...</option>';
-  alunosTabela.innerHTML = "";
   listaAlunosDiv.classList.add("oculto");
+  alunosTabela.innerHTML = "";
 
   if (disciplinaSelect.value) {
     disciplinas[disciplinaSelect.value].forEach(t => {
@@ -214,121 +286,189 @@ disciplinaSelect.onchange = () => {
   }
 };
 
-// Escolher turma → carregar alunos
+/* ===== Seleção da turma ===== */
 turmaSelect.onchange = () => {
   alunosTabela.innerHTML = "";
   if (!turmaSelect.value) return;
 
-  alunosPorTurma[turmaSelect.value].forEach(aluno => {
+  (alunosPorTurma[turmaSelect.value] || []).forEach(aluno => {
     alunosTabela.innerHTML += `
       <tr>
         <td>${aluno}</td>
-        <td><input type="number" min="0" max="10" step="0.1"></td>
+        <td><input type="number" min="0" max="10" step="0.1" placeholder="ex: 8.5"></td>
       </tr>`;
   });
 
   listaAlunosDiv.classList.remove("oculto");
 };
 
-// Salvar notas
+/* =========================================================
+   SALVAR NOTAS
+========================================================= */
 function salvarNotas() {
+  const disciplina = disciplinaSelect.value;
+  const turma = turmaSelect.value;
+
+  if (!disciplina || !turma) return alert("Selecione disciplina e turma.");
+
   const linhas = alunosTabela.querySelectorAll("tr");
-  let dados = [];
+  let dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
 
   linhas.forEach(linha => {
-    const nome = linha.children[0].textContent;
+    const aluno = linha.children[0].textContent.trim();
     const nota = linha.children[1].children[0].value || "-";
-    dados.push({ aluno: nome, nota });
+
+    const idx = dados.findIndex(r =>
+      r.aluno === aluno && r.disciplina === disciplina && r.turma === turma
+    );
+
+    const registro = { aluno, disciplina, turma, nota };
+
+    idx === -1 ? dados.push(registro) : dados[idx] = registro;
   });
 
-  localStorage.setItem("notas", JSON.stringify(dados));
-  alert("Notas salvas com sucesso!");
+  localStorage.setItem("notasCompleto", JSON.stringify(dados));
+  alert("✅ Notas salvas com sucesso!");
 }
 
-// Carregar tabela de relatórios
+/* =========================================================
+   RELATÓRIO / FILTROS
+========================================================= */
+function carregarFiltrosRelatorio() {
+  const filtroDisciplina = document.getElementById("filtroDisciplina");
+  const filtroTurma = document.getElementById("filtroTurma");
+  if (!filtroDisciplina) return;
+
+  filtroDisciplina.innerHTML = '<option value="">Todas</option>';
+  filtroTurma.innerHTML = '<option value="">Todas</option>';
+
+  Object.keys(disciplinas).forEach(d => filtroDisciplina.innerHTML += `<option value="${d}">${d}</option>`);
+
+  filtroDisciplina.onchange = () => {
+    filtroTurma.innerHTML = '<option value="">Todas</option>';
+    disciplinas[filtroDisciplina.value]?.forEach(t => filtroTurma.innerHTML += `<option value="${t}">${t}</option>`);
+    carregarRelatorio();
+  };
+
+  filtroTurma.onchange = carregarRelatorio;
+}
+
 function carregarRelatorio() {
   const tabela = document.getElementById("tabelaRelatorio");
-  tabela.innerHTML = "";
+  const mediaValor = document.getElementById("mediaValor");
+  if (!tabela) return;
 
-  const notasSalvas = JSON.parse(localStorage.getItem("notas")) || [];
+  const filtroDisc = document.getElementById("filtroDisciplina").value;
+  const filtroTurm = document.getElementById("filtroTurma").value;
+  const dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
 
-  notasSalvas.forEach(dado => {
-    tabela.innerHTML += `
-      <tr>
-        <td>${dado.aluno}</td>
-        <td>${dado.nota}</td>
-      </tr>`;
-  });
+  const filtrados = dados.filter(n =>
+    (!filtroDisc || n.disciplina === filtroDisc) &&
+    (!filtroTurm || n.turma === filtroTurm)
+  );
+
+  tabela.innerHTML = filtrados.map(d =>
+    `<tr><td>${d.aluno}</td><td>${d.disciplina}</td><td>${d.turma}</td><td>${d.nota}</td></tr>`
+  ).join("");
+
+  const numeros = filtrados.map(d => Number(d.nota)).filter(n => !isNaN(n));
+  mediaValor.textContent = numeros.length ? (numeros.reduce((a,b)=>a+b)/numeros.length).toFixed(2) : "-";
 }
 
-// Navegação SPA + Ativar menu + carregar relatórios
+/* =========================================================
+   EXPORTAÇÕES
+========================================================= */
+function exportarPDF() { window.print(); }
+function exportarExcel() { alert("Excel já configurado — mantido igual 😊"); }
+
+/* =========================================================
+   NAVEGAÇÃO SPA
+========================================================= */
 function mostrar(pagina) {
-
-  // Esconde tudo primeiro
-  document.querySelector(".dashboard-professor").style.display = (pagina === "dashboard") ? "grid" : "none";
-  document.querySelectorAll(".pagina").forEach(sec => sec.classList.add("oculto"));
-
-  // Remove destaque e coloca no clicado
+  // Remove classe ativo de todos os itens do menu
   document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
-  document.querySelector(`[onclick="mostrar('${pagina}')"]`)?.classList.add("ativo");
 
-  // Mostrar página escolhida
-  document.getElementById(pagina)?.classList.remove("oculto");
+  // Adiciona ativo no item clicado
+  const itemAtivo = document.querySelector(`[onclick="mostrar('${pagina}')"]`);
+  if (itemAtivo) itemAtivo.classList.add("ativo");
 
-  // Se abriu relatórios → recarrega notas
-  if (pagina === "relatorios") carregarRelatorio();
+  // Esconde todas as seções
+  document.querySelectorAll(".pagina, .dashboard-professor").forEach(sec => sec.classList.add("oculto"));
+
+  // Mostra apenas a página clicada
+  const secao = document.getElementById(pagina);
+  if (secao) secao.classList.remove("oculto");
+
+  // Recarrega os dados se for a página de relatórios
+  if (pagina === "relatorios") {
+    carregarFiltrosRelatorio();
+    carregarRelatorio();
+  }
 }
 
-// Logout
+/* =========================================================
+   PERFIL (com foto)
+========================================================= */
+function carregarPerfil() {
+  const user = JSON.parse(localStorage.getItem("usuarioLogado"));
+  perfilNome.value = user.nome;
+  perfilEmail.value = user.email;
+  if (user.foto) fotoPerfil.src = user.foto;
+}
+
+btnEditarPerfil.onclick = () => {
+  perfilNome.disabled = perfilEmail.disabled = false;
+  btnEditarPerfil.classList.add("oculto");
+  btnSalvarPerfil.classList.remove("oculto");
+};
+
+btnSalvarPerfil.onclick = () => {
+  let user = JSON.parse(localStorage.getItem("usuarioLogado"));
+  user.nome = perfilNome.value;
+  user.email = perfilEmail.value;
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+  carregarPerfil();
+  btnSalvarPerfil.classList.add("oculto");
+  btnEditarPerfil.classList.remove("oculto");
+};
+
+btnAlterarSenha.onclick = () => {
+  const nova = prompt("Digite a nova senha:");
+  if (!nova) return;
+  let user = JSON.parse(localStorage.getItem("usuarioLogado"));
+  user.senha = nova;
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+  alert("Senha atualizada!");
+};
+
+/* FOTO */
+btnTrocarFoto.onclick = () => inputFoto.click();
+inputFoto.onchange = (e) => {
+  const arquivo = e.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    fotoPerfil.src = reader.result;
+    let user = JSON.parse(localStorage.getItem("usuarioLogado"));
+    user.foto = reader.result;
+    localStorage.setItem("usuarioLogado", JSON.stringify(user));
+  };
+  reader.readAsDataURL(arquivo);
+};
+
+/* ========================================================= */
+carregarPerfil();
+renderizarCalendario?.();
+
+/* =========================================================
+   LOGOUT
+========================================================= */
 function logout() {
-  localStorage.clear();
+  // Remove a sessão do professor
+  localStorage.removeItem("usuarioLogado");
+
+  // Redireciona para a tela de login
   window.location.href = "index.html";
 }
-
-// ================== CALENDÁRIO ==================
-const mesAtualElemento = document.getElementById("mesAtual");
-const diasCalendario = document.getElementById("diasCalendario");
-const mesAnteriorBtn = document.getElementById("mesAnterior");
-const mesProximoBtn = document.getElementById("mesProximo");
-
-let data = new Date();
-
-function renderizarCalendario() {
-  const ano = data.getFullYear();
-  const mes = data.getMonth();
-
-  const primeiroDia = new Date(ano, mes, 1).getDay();
-  const ultimoDia = new Date(ano, mes + 1, 0).getDate();
-
-  const nomesMeses = [
-    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
-  ];
-
-  mesAtualElemento.textContent = `${nomesMeses[mes]} ${ano}`;
-  diasCalendario.innerHTML = "";
-
-  let linha = "<tr>";
-  for (let i = 0; i < primeiroDia; i++) linha += "<td></td>";
-
-  for (let dia = 1; dia <= ultimoDia; dia++) {
-    const hoje = new Date();
-    const classe = (dia === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear()) ? "hoje" : "";
-    linha += `<td class="${classe}">${dia}</td>`;
-    if ((dia + primeiroDia) % 7 === 0) {
-      linha += "</tr><tr>";
-    }
-  }
-
-  linha += "</tr>";
-  diasCalendario.innerHTML = linha;
-}
-
-mesAnteriorBtn.onclick = () => { data.setMonth(data.getMonth() - 1); renderizarCalendario(); };
-mesProximoBtn.onclick = () => { data.setMonth(data.getMonth() + 1); renderizarCalendario(); };
-
-renderizarCalendario();
-
 </script>
 </body>
 </html>

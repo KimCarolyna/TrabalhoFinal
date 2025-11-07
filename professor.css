@@ -340,46 +340,273 @@ body {
   transform: scale(1.07);
 }
 
-/* ===== RELATÓRIO ===== */
-#relatorios {
-  margin-top: 20px;
+/* ===== FILTROS DO RELATÓRIO ===== */
+.filtros-relatorio {
+  margin: 12px 0 18px;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  color: #fff;
 }
 
-.relatorio-box {
-  margin-top: 15px;
-  padding: 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
+/* Label + Select */
+.filtros-relatorio label {
+  font-weight: 600;
+  margin-right: 6px;
 }
 
-/* Tabela do relatório */
-#relatorios table {
+.filtros-relatorio .campo-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtros-relatorio select {
+  width: 160px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.85);
+  color: #003366;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+  appearance: none;
+}
+
+/* Hover */
+.filtros-relatorio select:hover {
+  background: #ffffff;
+  border-color: #0071ce;
+}
+
+/* Focus */
+.filtros-relatorio select:focus {
+  outline: none;
+  border-color: #0071ce;
+  box-shadow: 0 0 6px rgba(0, 113, 206, 0.6);
+}
+
+/* Opções */
+.filtros-relatorio select option {
+  color: #003366;
+  background: #ffffff;
+}
+
+/* Quando o usuário clica */
+.filtros-relatorio select:focus {
+  outline: none;
+  border-color: #0071ce;
+  box-shadow: 0 0 6px rgba(0, 113, 206, 0.6);
+}
+
+/* Correção da cor do texto das opções */
+.filtros-relatorio select option {
+  color: #003366;
+  background: #ffffff;
+}
+
+/* ===== TABELA DE RELATÓRIO ===== */
+.tabela-relatorio {
   width: 100%;
   border-collapse: collapse;
-}
-
-#relatorios th, #relatorios td {
-  padding: 12px 10px;
-  color: #fff;
-  font-size: 15px;
-  text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
+  margin-top: 15px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* Cabeçalho */
-#relatorios thead th {
-  background: rgba(255, 255, 255, 0.18);
+.tabela-relatorio thead {
+  background: #0066cc;
+  color: white;
   font-weight: bold;
 }
 
-/* Linhas alternadas para visual ficar mais limpo */
-#relatorios tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.10);
+.tabela-relatorio th, .tabela-relatorio td {
+  padding: 10px 14px;
+  text-align: left;
 }
 
-/* Hover nas linhas */
-#relatorios tbody tr:hover {
-  background: rgba(255, 255, 255, 0.18);
+/* Linhas alternadas */
+.tabela-relatorio tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Hover suave */
+.tabela-relatorio tbody tr:hover {
+  background: rgba(255, 255, 255, 0.23);
+  transition: 0.25s;
+}
+
+/* ===== MÉDIA ===== */
+.media-turma {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* ===== BOTÕES DE EXPORTAÇÃO ===== */
+.export-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.export-buttons button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #0071ce;
+  color: white;
   transition: 0.3s;
+}
+
+.export-buttons button:hover {
+  background: #005aa3;
+}
+
+/* ===== MINHAS DISCIPLINAS ===== */
+.disciplinas-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+#btnAddDisciplina {
+  padding: 8px 14px;
+  background: #ff8c42;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: .3s;
+}
+
+#btnAddDisciplina:hover {
+  background: #ff7a26;
+}
+
+.btn-acao {
+  background: #005ea8;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.btn-acao:hover {
+  background: #003d73;
+}
+
+.btn-excluir {
+  background: #d9534f;
+}
+
+.btn-excluir:hover {
+  background: #b9322f;
+}
+
+/* ===== PERFIL ===== */
+.perfil-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
+}
+
+.perfil-avatar {
+  text-align: center;
+}
+
+.perfil-avatar img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  margin-bottom: 10px;
+}
+
+#btnTrocarFoto {
+  padding: 8px 12px;
+  background: #ffaa3b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  transition: .3s;
+}
+
+#btnTrocarFoto:hover {
+  background: #ff9022;
+}
+
+.perfil-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perfil-info input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+.perfil-botoes {
+  display: flex;
+  gap: 10px;
+}
+
+#btnEditarPerfil, #btnSalvarPerfil, .btn-senha {
+  padding: 10px;
+  background: #0071ce;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: .3s;
+}
+
+#btnEditarPerfil:hover, #btnSalvarPerfil:hover, .btn-senha:hover {
+  background: #005aa3;
+}
+
+/* ===== CONTROLE DE VISIBILIDADE DAS SEÇÕES ===== */
+
+/* Todas as páginas (incluindo Dashboard) ficam ocultas por padrão */
+.pagina {
+  display: none;
+  margin-top: 40px;
+}
+
+/* Quando estiver ativa → aparece */
+.pagina:not(.oculto) {
+  display: block;
+}
+
+/* Item de menu ativo */
+.menu-topo ul li.ativo {
+  color: var(--destaque);
+  font-weight: 600;
 }
