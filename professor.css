@@ -165,3 +165,221 @@ body {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== CALENDÁRIO ===== */
+.calendario-container {
+  margin-top: 20px;
+  padding: 25px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  max-width: 700px;
+}
+
+.calendario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendario-header h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.calendario-header button {
+  background: var(--laranja);
+  border: none;
+  padding: 6px 12px;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.calendario-header button:hover {
+  transform: scale(1.08);
+}
+
+.calendario-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.calendario-tabela td {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.calendario-tabela td:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.calendario-tabela .hoje {
+  background: var(--laranja);
+  font-weight: bold;
+  color: #000;
+}
+
+/* ===== SELECTS DE DISCIPLINA E TURMA ===== */
+.form-lancar-notas select {
+  width: 200px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: .3s;
+}
+
+/* Placeholder (opção "Selecione...") */
+.form-lancar-notas select option {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+/* Efeito hover */
+.form-lancar-notas select:hover {
+  transform: scale(1.04);
+  border-color: var(--laranja);
+}
+
+/* Rótulos alinhados */
+.form-lancar-notas label {
+  font-weight: 600;
+  margin-right: 8px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* Agrupar disciplina e turma lado a lado */
+#disciplinaSelect, #turmaSelect {
+  margin-right: 20px;
+}
+
+/* Caixa da tabela */
+.lista-alunos table {
+  margin-top: 15px;
+  width: 100%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ===== TABELA LANÇAR NOTAS ===== */
+.lista-alunos {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+}
+
+/* Cabeçalho da tabela */
+.lista-alunos table thead {
+  background: rgba(255,255,255,0.18);
+}
+
+.lista-alunos th, .lista-alunos td {
+  padding: 10px;
+  text-align: left;
+  color: #fff;
+  font-size: 15px;
+}
+
+/* Ajustar largura das colunas */
+.lista-alunos th:nth-child(1),
+.lista-alunos td:nth-child(1) {
+  width: 60%;
+}
+
+.lista-alunos th:nth-child(2),
+.lista-alunos td:nth-child(2) {
+  width: 40%;
+}
+
+/* Inputs de notas */
+.lista-alunos input[type="number"] {
+  width: 80px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Botão Salvar Notas */
+.btn-salvar {
+  display: block;
+  margin: 18px auto 0; /* centraliza */
+  padding: 10px 26px;
+  background: #ff8c42;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn-salvar:hover {
+  background: #ff7a26;
+  transform: scale(1.07);
+}
+
+/* ===== RELATÓRIO ===== */
+#relatorios {
+  margin-top: 20px;
+}
+
+.relatorio-box {
+  margin-top: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+/* Tabela do relatório */
+#relatorios table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#relatorios th, #relatorios td {
+  padding: 12px 10px;
+  color: #fff;
+  font-size: 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Cabeçalho */
+#relatorios thead th {
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: bold;
+}
+
+/* Linhas alternadas para visual ficar mais limpo */
+#relatorios tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+/* Hover nas linhas */
+#relatorios tbody tr:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transition: 0.3s;
+}

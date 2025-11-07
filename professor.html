@@ -84,76 +84,251 @@
       </div>
     </section>
 
-    <!-- ===== ÁREA DAS PÁGINAS (OCULTA INICIALMENTE) ===== -->
-
+    <!-- ===== PÁGINAS ===== -->
 <section id="disciplinas" class="pagina oculto">
   <h2>Minhas Disciplinas</h2>
-  <p>Aqui você pode visualizar e editar suas disciplinas.</p>
 </section>
 
 <section id="turmas" class="pagina oculto">
   <h2>Gerenciar Turmas</h2>
-  <p>Gerencie suas turmas e alunos matriculados.</p>
 </section>
 
+<!-- ✅ NOVA SEÇÃO DE LANÇAMENTO DE NOTAS -->
 <section id="notas" class="pagina oculto">
   <h2>Lançar Notas</h2>
-  <p>Registre e atualize notas por disciplina e turma.</p>
+
+  <div class="form-lancar-notas">
+
+    <label for="disciplinaSelect">Disciplina:</label>
+    <select id="disciplinaSelect">
+      <option value="">Selecione...</option>
+    </select>
+
+    <label for="turmaSelect">Turma:</label>
+    <select id="turmaSelect">
+      <option value="">Selecione uma disciplina primeiro...</option>
+    </select>
+
+    <div id="listaAlunos" class="lista-alunos oculto">
+      <h3>Alunos da Turma</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody id="alunosTabela"></tbody>
+      </table>
+
+      <button onclick="salvarNotas()" class="btn-salvar">Salvar Notas</button>
+    </div>
+
+  </div>
 </section>
 
 <section id="relatorios" class="pagina oculto">
-  <h2>Relatórios</h2>
-  <p>Relatórios de desempenho e progresso por turma.</p>
+  <h2>Relatórios de Notas</h2>
+
+  <div class="relatorio-box">
+    <table>
+      <thead>
+        <tr>
+          <th>Aluno</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaRelatorio"></tbody>
+    </table>
+  </div>
 </section>
 
 <section id="calendario" class="pagina oculto">
   <h2>Calendário Acadêmico</h2>
-  <p>Veja datas de provas, eventos e reuniões.</p>
+
+  <div class="calendario-container">
+    <div class="calendario-header">
+      <button id="mesAnterior"><i class="ri-arrow-left-s-line"></i></button>
+      <h3 id="mesAtual"></h3>
+      <button id="mesProximo"><i class="ri-arrow-right-s-line"></i></button>
+    </div>
+
+    <table class="calendario-tabela">
+      <thead>
+        <tr>
+          <th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th>
+        </tr>
+      </thead>
+      <tbody id="diasCalendario"></tbody>
+    </table>
+  </div>
 </section>
 
 <section id="mensagens" class="pagina oculto">
   <h2>Mensagens</h2>
-  <p>Envie mensagens para alunos e administração.</p>
 </section>
 
 <section id="perfil" class="pagina oculto">
   <h2>Perfil do Professor</h2>
-  <p>Atualize seus dados pessoais e senha.</p>
 </section>
 
   </main>
 
-  <script>
-  document.getElementById("nomeProfessor").textContent =
-    localStorage.getItem("nomeUsuario") || "Prof. Ana Souza";
+<script>
+document.getElementById("nomeProfessor").textContent =
+  localStorage.getItem("nomeUsuario") || "Prof. Ana Souza";
 
-  function mostrar(pagina) {
-    // Esconde dashboard
-    document.querySelector(".dashboard-professor").style.display = (pagina === "dashboard" ? "grid" : "none");
+// Dados temporários
+const disciplinas = {
+  "Matemática": ["Turma A", "Turma B"],
+  "Português": ["Turma A"],
+  "História": ["Turma C"]
+};
 
-    // Esconde todas as páginas internas
-    document.querySelectorAll(".pagina").forEach(sec => sec.classList.add("oculto"));
+const alunosPorTurma = {
+  "Turma A": ["Lucas", "Mariana", "João", "Ana Paula"],
+  "Turma B": ["Carlos", "Júlia", "Miguel"],
+  "Turma C": ["Rafaela", "Tiago", "Eduardo"]
+};
 
-    // Atualiza menu ativo
-    document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
+const disciplinaSelect = document.getElementById("disciplinaSelect");
+const turmaSelect = document.getElementById("turmaSelect");
+const listaAlunosDiv = document.getElementById("listaAlunos");
+const alunosTabela = document.getElementById("alunosTabela");
 
-    // Se for dashboard, só ativa o primeiro menu
-    if (pagina === "dashboard") {
-      document.querySelector(".menu-topo ul li:first-child").classList.add("ativo");
-      return;
+// Carregar disciplinas
+Object.keys(disciplinas).forEach(d => {
+  disciplinaSelect.innerHTML += `<option value="${d}">${d}</option>`;
+});
+
+// Escolher disciplina → carregar turmas
+disciplinaSelect.onchange = () => {
+  turmaSelect.innerHTML = '<option value="">Selecione...</option>';
+  alunosTabela.innerHTML = "";
+  listaAlunosDiv.classList.add("oculto");
+
+  if (disciplinaSelect.value) {
+    disciplinas[disciplinaSelect.value].forEach(t => {
+      turmaSelect.innerHTML += `<option value="${t}">${t}</option>`;
+    });
+  }
+};
+
+// Escolher turma → carregar alunos
+turmaSelect.onchange = () => {
+  alunosTabela.innerHTML = "";
+  if (!turmaSelect.value) return;
+
+  alunosPorTurma[turmaSelect.value].forEach(aluno => {
+    alunosTabela.innerHTML += `
+      <tr>
+        <td>${aluno}</td>
+        <td><input type="number" min="0" max="10" step="0.1"></td>
+      </tr>`;
+  });
+
+  listaAlunosDiv.classList.remove("oculto");
+};
+
+// Salvar notas
+function salvarNotas() {
+  const linhas = alunosTabela.querySelectorAll("tr");
+  let dados = [];
+
+  linhas.forEach(linha => {
+    const nome = linha.children[0].textContent;
+    const nota = linha.children[1].children[0].value || "-";
+    dados.push({ aluno: nome, nota });
+  });
+
+  localStorage.setItem("notas", JSON.stringify(dados));
+  alert("Notas salvas com sucesso!");
+}
+
+// Carregar tabela de relatórios
+function carregarRelatorio() {
+  const tabela = document.getElementById("tabelaRelatorio");
+  tabela.innerHTML = "";
+
+  const notasSalvas = JSON.parse(localStorage.getItem("notas")) || [];
+
+  notasSalvas.forEach(dado => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${dado.aluno}</td>
+        <td>${dado.nota}</td>
+      </tr>`;
+  });
+}
+
+// Navegação SPA + Ativar menu + carregar relatórios
+function mostrar(pagina) {
+
+  // Esconde tudo primeiro
+  document.querySelector(".dashboard-professor").style.display = (pagina === "dashboard") ? "grid" : "none";
+  document.querySelectorAll(".pagina").forEach(sec => sec.classList.add("oculto"));
+
+  // Remove destaque e coloca no clicado
+  document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
+  document.querySelector(`[onclick="mostrar('${pagina}')"]`)?.classList.add("ativo");
+
+  // Mostrar página escolhida
+  document.getElementById(pagina)?.classList.remove("oculto");
+
+  // Se abriu relatórios → recarrega notas
+  if (pagina === "relatorios") carregarRelatorio();
+}
+
+// Logout
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+// ================== CALENDÁRIO ==================
+const mesAtualElemento = document.getElementById("mesAtual");
+const diasCalendario = document.getElementById("diasCalendario");
+const mesAnteriorBtn = document.getElementById("mesAnterior");
+const mesProximoBtn = document.getElementById("mesProximo");
+
+let data = new Date();
+
+function renderizarCalendario() {
+  const ano = data.getFullYear();
+  const mes = data.getMonth();
+
+  const primeiroDia = new Date(ano, mes, 1).getDay();
+  const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+  const nomesMeses = [
+    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
+  ];
+
+  mesAtualElemento.textContent = `${nomesMeses[mes]} ${ano}`;
+  diasCalendario.innerHTML = "";
+
+  let linha = "<tr>";
+  for (let i = 0; i < primeiroDia; i++) linha += "<td></td>";
+
+  for (let dia = 1; dia <= ultimoDia; dia++) {
+    const hoje = new Date();
+    const classe = (dia === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear()) ? "hoje" : "";
+    linha += `<td class="${classe}">${dia}</td>`;
+    if ((dia + primeiroDia) % 7 === 0) {
+      linha += "</tr><tr>";
     }
-
-    // Mostra a página escolhida
-    document.getElementById(pagina).classList.remove("oculto");
-
-    // Ativa highlight do menu correspondente
-    document.querySelector(`[onclick="mostrar('${pagina}')"]`).classList.add("ativo");
   }
 
-  function logout() {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
+  linha += "</tr>";
+  diasCalendario.innerHTML = linha;
+}
+
+mesAnteriorBtn.onclick = () => { data.setMonth(data.getMonth() - 1); renderizarCalendario(); };
+mesProximoBtn.onclick = () => { data.setMonth(data.getMonth() + 1); renderizarCalendario(); };
+
+renderizarCalendario();
+
 </script>
 </body>
 </html>
