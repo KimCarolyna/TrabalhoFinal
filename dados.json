@@ -1,0 +1,22 @@
+[
+  {
+    "nome": "Jeon Jungkook",
+    "cpf": "123.456.847-41",
+    "email": "jeonjungkookestudante123@gmail.com",
+    "usuario": "Jeonjungkook",
+    "senha": "12345678",
+    "nascimento": "21/02/1980",
+    "nacionalidade": "Coreana",
+    "escolaridade": "superior"
+  },
+  {
+    "nome": "Roberta Carvalho",
+    "cpf": "456.890.123-43",
+    "email": "robertacarvalho123@gmail.com",
+    "usuario": "robertacarvalho",
+    "senha": "156026789",
+    "nascimento": "12/02/1980",
+    "nacionalidade": "Brasileira",
+    "escolaridade": "medio"
+  }
+]
