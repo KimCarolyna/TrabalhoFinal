@@ -100,6 +100,19 @@
 
 <section id="turmas" class="pagina oculto">
   <h2>Gerenciar Turmas</h2>
+
+  <div class="turmas-container">
+    <table class="tabela-turmas">
+      <thead>
+        <tr>
+          <th>Nome da Turma</th>
+          <th>Disciplina</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaTurmas"></tbody>
+    </table>
+  </div>
 </section>
 
 <!-- ✅ NOVA SEÇÃO DE LANÇAMENTO DE NOTAS -->
@@ -202,9 +215,9 @@
   <div class="perfil-container">
 
     <div class="perfil-avatar">
-      <img id="fotoPerfil" src="https://i.imgur.com/9b9ZQPP.png" alt="Foto do Professor">
-      <input type="file" id="inputFoto" accept="image/*" class="oculto">
+      <img id="fotoPerfil" src="imagens/Foto_de_Perfil_Pedro.png" alt="Foto do Professor">
       <button id="btnTrocarFoto">Trocar Foto</button>
+      <input type="file" id="inputFoto" accept="image/*" class="oculto">
     </div>
 
     <div class="perfil-info">
@@ -233,242 +246,363 @@
   </main>
 
 <script>
-/* =========================================================
-   INICIALIZAÇÃO DO NOME NO DASHBOARD
-========================================================= */
-const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-document.getElementById("nomeProfessor").textContent = usuario?.nome || "Professor";
+document.addEventListener("DOMContentLoaded", () => {
 
-/* =========================================================
-   DADOS EXEMPLO (caso ainda não tenha banco)
-========================================================= */
-const disciplinasPadrao = {
-  "Matemática": ["Turma A", "Turma B"],
-  "Português": ["Turma A"],
-  "História": ["Turma C"]
-};
+  /* ===== INICIALIZAÇÃO NOME ===== */
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+  document.getElementById("nomeProfessor").textContent = usuario?.nome || "Professor";
 
-const alunosPorTurma = {
-  "Turma A": ["Lucas", "Mariana", "João", "Ana Paula"],
-  "Turma B": ["Carlos", "Júlia", "Miguel"],
-  "Turma C": ["Rafaela", "Tiago", "Eduardo"]
-};
+  /* ===== DADOS PADRÃO ===== */
+  const disciplinasPadrao = {
+    "Matemática": ["Turma A", "Turma B"],
+    "Português": ["Turma A"],
+    "História": ["Turma C"]
+  };
 
-const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || disciplinasPadrao;
+  const alunosPorTurma = {
+    "Turma A": ["Lucas", "Mariana", "João", "Ana Paula"],
+    "Turma B": ["Carlos", "Júlia", "Miguel"],
+    "Turma C": ["Rafaela", "Tiago", "Eduardo"]
+  };
 
-/* =========================================================
-   ELEMENTOS DA TELA DE LANÇAMENTO DE NOTAS
-========================================================= */
-const disciplinaSelect = document.getElementById("disciplinaSelect");
-const turmaSelect = document.getElementById("turmaSelect");
-const listaAlunosDiv = document.getElementById("listaAlunos");
-const alunosTabela = document.getElementById("alunosTabela");
-
-/* ===== Preenche disciplinas ===== */
-function initDisciplinaSelect() {
-  disciplinaSelect.innerHTML = `<option value="">Selecione...</option>`;
-  Object.keys(disciplinas).forEach(d => {
-    disciplinaSelect.innerHTML += `<option value="${d}">${d}</option>`;
-  });
-}
-initDisciplinaSelect();
-
-/* ===== Seleção da disciplina ===== */
-disciplinaSelect.onchange = () => {
-  turmaSelect.innerHTML = '<option value="">Selecione...</option>';
-  listaAlunosDiv.classList.add("oculto");
-  alunosTabela.innerHTML = "";
-
-  if (disciplinaSelect.value) {
-    disciplinas[disciplinaSelect.value].forEach(t => {
-      turmaSelect.innerHTML += `<option value="${t}">${t}</option>`;
-    });
+  /* ===== CARREGA / CRIA disciplinas NO localStorage SE NÃO EXISTIR ===== */
+  let disciplinas = JSON.parse(localStorage.getItem("disciplinas"));
+  if (!disciplinas || Object.keys(disciplinas).length === 0) {
+    disciplinas = disciplinasPadrao;
+    localStorage.setItem("disciplinas", JSON.stringify(disciplinas));
   }
-};
 
-/* ===== Seleção da turma ===== */
-turmaSelect.onchange = () => {
-  alunosTabela.innerHTML = "";
-  if (!turmaSelect.value) return;
+  /* ===== ELEMENTOS ===== */
+  const disciplinaSelect = document.getElementById("disciplinaSelect");
+  const turmaSelect = document.getElementById("turmaSelect");
+  const listaAlunosDiv = document.getElementById("listaAlunos");
+  const alunosTabela = document.getElementById("alunosTabela");
 
-  (alunosPorTurma[turmaSelect.value] || []).forEach(aluno => {
-    alunosTabela.innerHTML += `
-      <tr>
-        <td>${aluno}</td>
-        <td><input type="number" min="0" max="10" step="0.1" placeholder="ex: 8.5"></td>
-      </tr>`;
-  });
-
-  listaAlunosDiv.classList.remove("oculto");
-};
-
-/* =========================================================
-   SALVAR NOTAS
-========================================================= */
-function salvarNotas() {
-  const disciplina = disciplinaSelect.value;
-  const turma = turmaSelect.value;
-
-  if (!disciplina || !turma) return alert("Selecione disciplina e turma.");
-
-  const linhas = alunosTabela.querySelectorAll("tr");
-  let dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
-
-  linhas.forEach(linha => {
-    const aluno = linha.children[0].textContent.trim();
-    const nota = linha.children[1].children[0].value || "-";
-
-    const idx = dados.findIndex(r =>
-      r.aluno === aluno && r.disciplina === disciplina && r.turma === turma
-    );
-
-    const registro = { aluno, disciplina, turma, nota };
-
-    idx === -1 ? dados.push(registro) : dados[idx] = registro;
-  });
-
-  localStorage.setItem("notasCompleto", JSON.stringify(dados));
-  alert("✅ Notas salvas com sucesso!");
-}
-
-/* =========================================================
-   RELATÓRIO / FILTROS
-========================================================= */
-function carregarFiltrosRelatorio() {
   const filtroDisciplina = document.getElementById("filtroDisciplina");
   const filtroTurma = document.getElementById("filtroTurma");
-  if (!filtroDisciplina) return;
-
-  filtroDisciplina.innerHTML = '<option value="">Todas</option>';
-  filtroTurma.innerHTML = '<option value="">Todas</option>';
-
-  Object.keys(disciplinas).forEach(d => filtroDisciplina.innerHTML += `<option value="${d}">${d}</option>`);
-
-  filtroDisciplina.onchange = () => {
-    filtroTurma.innerHTML = '<option value="">Todas</option>';
-    disciplinas[filtroDisciplina.value]?.forEach(t => filtroTurma.innerHTML += `<option value="${t}">${t}</option>`);
-    carregarRelatorio();
-  };
-
-  filtroTurma.onchange = carregarRelatorio;
-}
-
-function carregarRelatorio() {
-  const tabela = document.getElementById("tabelaRelatorio");
+  const tabelaRelatorio = document.getElementById("tabelaRelatorio");
   const mediaValor = document.getElementById("mediaValor");
-  if (!tabela) return;
 
-  const filtroDisc = document.getElementById("filtroDisciplina").value;
-  const filtroTurm = document.getElementById("filtroTurma").value;
-  const dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
+  /* ===== FUNÇÕES ===== */
+  function initDisciplinaSelect() {
+    if (!disciplinaSelect) return;
+    disciplinaSelect.innerHTML = `<option value="">Selecione...</option>`;
+    Object.keys(disciplinas).forEach(nome => {
+      disciplinaSelect.innerHTML += `<option value="${nome}">${nome}</option>`;
+    });
+  }
 
-  const filtrados = dados.filter(n =>
-    (!filtroDisc || n.disciplina === filtroDisc) &&
-    (!filtroTurm || n.turma === filtroTurm)
-  );
+  function initFiltrosRelatorio() {
+    if (!filtroDisciplina || !filtroTurma) return;
+    filtroDisciplina.innerHTML = '<option value="">Todas</option>';
+    filtroTurma.innerHTML = '<option value="">Todas</option>';
+    Object.keys(disciplinas).forEach(d => filtroDisciplina.innerHTML += `<option value="${d}">${d}</option>`);
+    filtroDisciplina.onchange = () => {
+      filtroTurma.innerHTML = '<option value="">Todas</option>';
+      (disciplinas[filtroDisciplina.value] || []).forEach(t => filtroTurma.innerHTML += `<option value="${t}">${t}</option>`);
+      carregarRelatorio();
+    };
+    filtroTurma.onchange = carregarRelatorio;
+  }
 
-  tabela.innerHTML = filtrados.map(d =>
-    `<tr><td>${d.aluno}</td><td>${d.disciplina}</td><td>${d.turma}</td><td>${d.nota}</td></tr>`
-  ).join("");
+  function carregarRelatorio() {
+    if (!tabelaRelatorio) return;
+    const filtroD = filtroDisciplina?.value || "";
+    const filtroT = filtroTurma?.value || "";
+    const dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
+    const filtrados = dados.filter(n =>
+      (!filtroD || n.disciplina === filtroD) &&
+      (!filtroT || n.turma === filtroT)
+    );
 
-  const numeros = filtrados.map(d => Number(d.nota)).filter(n => !isNaN(n));
-  mediaValor.textContent = numeros.length ? (numeros.reduce((a,b)=>a+b)/numeros.length).toFixed(2) : "-";
-}
+    tabelaRelatorio.innerHTML = filtrados.map(d =>
+      `<tr><td>${d.aluno}</td><td>${d.disciplina}</td><td>${d.turma}</td><td>${d.nota}</td></tr>`
+    ).join("");
 
-/* =========================================================
-   EXPORTAÇÕES
-========================================================= */
-function exportarPDF() { window.print(); }
-function exportarExcel() { alert("Excel já configurado — mantido igual 😊"); }
+    const numeros = filtrados.map(d => Number(d.nota)).filter(n => !isNaN(n));
+    mediaValor.textContent = numeros.length ? (numeros.reduce((a,b)=>a+b)/numeros.length).toFixed(2) : "-";
+  }
 
-/* =========================================================
-   NAVEGAÇÃO SPA
-========================================================= */
-function mostrar(pagina) {
-  // Remove classe ativo de todos os itens do menu
-  document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
+  function salvarNotas() {
+    const disciplina = disciplinaSelect.value;
+    const turma = turmaSelect.value;
+    if (!disciplina || !turma) return alert("Selecione disciplina e turma.");
 
-  // Adiciona ativo no item clicado
-  const itemAtivo = document.querySelector(`[onclick="mostrar('${pagina}')"]`);
-  if (itemAtivo) itemAtivo.classList.add("ativo");
+    const linhas = alunosTabela.querySelectorAll("tr");
+    let dados = JSON.parse(localStorage.getItem("notasCompleto")) || [];
 
-  // Esconde todas as seções
-  document.querySelectorAll(".pagina, .dashboard-professor").forEach(sec => sec.classList.add("oculto"));
+    linhas.forEach(linha => {
+      const aluno = linha.children[0].textContent.trim();
+      const notaRaw = linha.children[1].children[0].value;
+      const nota = notaRaw === "" ? "-" : notaRaw;
 
-  // Mostra apenas a página clicada
-  const secao = document.getElementById(pagina);
-  if (secao) secao.classList.remove("oculto");
+      const idx = dados.findIndex(r =>
+        r.aluno === aluno && r.disciplina === disciplina && r.turma === turma
+      );
+      const registro = { aluno, disciplina, turma, nota };
+      if (idx === -1) dados.push(registro);
+      else dados[idx] = registro;
+    });
 
-  // Recarrega os dados se for a página de relatórios
-  if (pagina === "relatorios") {
-    carregarFiltrosRelatorio();
+    localStorage.setItem("notasCompleto", JSON.stringify(dados));
+    alert("✅ Notas salvas com sucesso!");
+    // atualiza relatório caso esteja visível
     carregarRelatorio();
   }
-}
 
-/* =========================================================
-   PERFIL (com foto)
-========================================================= */
-function carregarPerfil() {
-  const user = JSON.parse(localStorage.getItem("usuarioLogado"));
-  perfilNome.value = user.nome;
-  perfilEmail.value = user.email;
-  if (user.foto) fotoPerfil.src = user.foto;
-}
+  /* ===== EVENTOS select ===== */
+  if (disciplinaSelect) {
+    disciplinaSelect.onchange = () => {
+      turmaSelect.innerHTML = '<option value="">Selecione...</option>';
+      listaAlunosDiv.classList.add("oculto");
+      alunosTabela.innerHTML = "";
+      const sel = disciplinaSelect.value;
+      if (sel && disciplinas[sel]) {
+        disciplinas[sel].forEach(t => turmaSelect.innerHTML += `<option value="${t}">${t}</option>`);
+      }
+    };
+  }
 
-btnEditarPerfil.onclick = () => {
-  perfilNome.disabled = perfilEmail.disabled = false;
-  btnEditarPerfil.classList.add("oculto");
-  btnSalvarPerfil.classList.remove("oculto");
-};
+  if (turmaSelect) {
+    turmaSelect.onchange = () => {
+      alunosTabela.innerHTML = "";
+      if (!turmaSelect.value) return;
+      (alunosPorTurma[turmaSelect.value] || []).forEach(aluno => {
+        alunosTabela.innerHTML += `
+          <tr>
+            <td>${aluno}</td>
+            <td><input type="number" min="0" max="10" step="0.1" placeholder="ex: 8.5"></td>
+          </tr>`;
+      });
+      listaAlunosDiv.classList.remove("oculto");
+    };
+  }
 
-btnSalvarPerfil.onclick = () => {
-  let user = JSON.parse(localStorage.getItem("usuarioLogado"));
-  user.nome = perfilNome.value;
-  user.email = perfilEmail.value;
-  localStorage.setItem("usuarioLogado", JSON.stringify(user));
-  carregarPerfil();
-  btnSalvarPerfil.classList.add("oculto");
-  btnEditarPerfil.classList.remove("oculto");
-};
+  /* ===== EXPORT / PDF / EXCEL (simples) ===== */
+  function exportarPDF() { window.print(); }
+  function exportarExcel() { alert("Exportação para Excel configurada anteriormente."); }
 
-btnAlterarSenha.onclick = () => {
-  const nova = prompt("Digite a nova senha:");
-  if (!nova) return;
-  let user = JSON.parse(localStorage.getItem("usuarioLogado"));
-  user.senha = nova;
-  localStorage.setItem("usuarioLogado", JSON.stringify(user));
-  alert("Senha atualizada!");
-};
+  /* ===== NAVEGAÇÃO SPA ===== */
+  function mostrarPagina(pagina) {
+    // remove ativo do menu
+    document.querySelectorAll(".menu-topo ul li").forEach(li => li.classList.remove("ativo"));
+    // marca ativo
+    const item = Array.from(document.querySelectorAll(".menu-topo ul li")).find(li => li.getAttribute("onclick")?.includes(`'${pagina}'`));
+    if (item) item.classList.add("ativo");
 
-/* FOTO */
-btnTrocarFoto.onclick = () => inputFoto.click();
-inputFoto.onchange = (e) => {
-  const arquivo = e.target.files[0];
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    fotoPerfil.src = reader.result;
-    let user = JSON.parse(localStorage.getItem("usuarioLogado"));
-    user.foto = reader.result;
-    localStorage.setItem("usuarioLogado", JSON.stringify(user));
+    // esconde todas páginas e dashboard
+    document.querySelectorAll(".pagina").forEach(sec => sec.classList.add("oculto"));
+    document.getElementById("dashboard")?.classList.add("oculto");
+
+    // mostra a solicitada
+    const target = document.getElementById(pagina);
+    if (target) {
+      target.classList.remove("oculto");
+    }
+
+    // se abrir relatórios carrega filtros
+    if (pagina === "relatorios") {
+      initFiltrosRelatorio();
+      carregarRelatorio();
+    }
+  }
+
+  // expõe as funções globais usadas pelo HTML
+  window.salvarNotas = salvarNotas;
+  window.exportarPDF = exportarPDF;
+  window.exportarExcel = exportarExcel;
+  window.mostrar = mostrarPagina;
+
+  /* ===== PERFIL (simples) ===== */
+  function carregarPerfil() {
+    const user = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Professor", email: "" };
+    const perfilNome = document.getElementById("perfilNome");
+    const perfilEmail = document.getElementById("perfilEmail");
+    const fotoPerfil = document.getElementById("fotoPerfil");
+    if (perfilNome) perfilNome.value = user.nome || "";
+    if (perfilEmail) perfilEmail.value = user.email || "";
+    if (fotoPerfil && user.foto) fotoPerfil.src = user.foto;
+  }
+
+  window.carregarPerfil = carregarPerfil;
+
+  /* ===== LOGOUT ===== */
+  window.logout = function() {
+    localStorage.removeItem("usuarioLogado");
+    // se quiser limpar tudo: localStorage.clear();
+    window.location.href = "index.html";
   };
-  reader.readAsDataURL(arquivo);
-};
 
-/* ========================================================= */
-carregarPerfil();
-renderizarCalendario?.();
+  /* ===== Inicializações ===== */
+  initDisciplinaSelect();
+  initFiltrosRelatorio();
+  carregarPerfil();
 
-/* =========================================================
-   LOGOUT
-========================================================= */
-function logout() {
-  // Remove a sessão do professor
-  localStorage.removeItem("usuarioLogado");
+  // por padrão mostra dashboard ao abrir a página
+  mostrarPagina("dashboard");
 
-  // Redireciona para a tela de login
-  window.location.href = "index.html";
+  // conecta botões do perfil se existirem (controle de edição)
+  const btnEditarPerfil = document.getElementById("btnEditarPerfil");
+  const btnSalvarPerfil = document.getElementById("btnSalvarPerfil");
+  const btnAlterarSenha = document.getElementById("btnAlterarSenha");
+  const btnTrocarFoto = document.getElementById("btnTrocarFoto");
+  const inputFoto = document.getElementById("inputFoto");
+  const perfilNomeEl = document.getElementById("perfilNome");
+  const perfilEmailEl = document.getElementById("perfilEmail");
+  const fotoPerfilEl = document.getElementById("fotoPerfil");
+
+  if (btnEditarPerfil && btnSalvarPerfil && perfilNomeEl && perfilEmailEl) {
+    btnEditarPerfil.onclick = () => {
+      perfilNomeEl.disabled = perfilEmailEl.disabled = false;
+      btnEditarPerfil.classList.add("oculto");
+      btnSalvarPerfil.classList.remove("oculto");
+    };
+    btnSalvarPerfil.onclick = () => {
+      let user = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+      user.nome = perfilNomeEl.value;
+      user.email = perfilEmailEl.value;
+      localStorage.setItem("usuarioLogado", JSON.stringify(user));
+      carregarPerfil();
+      btnSalvarPerfil.classList.add("oculto");
+      btnEditarPerfil.classList.remove("oculto");
+    };
+  }
+
+  if (btnAlterarSenha) {
+    btnAlterarSenha.onclick = () => {
+      const nova = prompt("Digite a nova senha:");
+      if (!nova) return;
+      let user = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+      user.senha = nova;
+      localStorage.setItem("usuarioLogado", JSON.stringify(user));
+      alert("Senha atualizada!");
+    };
+  }
+
+  if (btnTrocarFoto && inputFoto && fotoPerfilEl) {
+    btnTrocarFoto.onclick = () => inputFoto.click();
+    inputFoto.onchange = (e) => {
+      const arquivo = e.target.files[0];
+      if (!arquivo) return;
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        fotoPerfilEl.src = reader.result;
+        let user = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+        user.foto = reader.result;
+        localStorage.setItem("usuarioLogado", JSON.stringify(user));
+      };
+      reader.readAsDataURL(arquivo);
+    };
+  }
+
+  // expõe salvarNotas no escopo global (já feito acima)
+  window.salvarNotas = salvarNotas;
+
+}); // DOMContentLoaded end
+
+document.addEventListener("DOMContentLoaded", function () {
+  const mesAtualLabel = document.getElementById("mesAtual");
+  const diasTabela = document.getElementById("diasCalendario");
+  const btnAnterior = document.getElementById("mesAnterior");
+  const btnProximo = document.getElementById("mesProximo");
+
+  let data = new Date();
+
+  function renderizarCalendario() {
+    diasTabela.innerHTML = "";
+
+    let ano = data.getFullYear();
+    let mes = data.getMonth();
+
+    // Mostra mês e ano
+    mesAtualLabel.textContent = data.toLocaleDateString("pt-BR", {
+      month: "long",
+      year: "numeric"
+    });
+
+    let primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+    let ultimoDiaMes = new Date(ano, mes + 1, 0).getDate();
+
+    let linha = document.createElement("tr");
+
+    // Preencher espaços antes do dia 1
+    for (let i = 0; i < primeiroDiaSemana; i++) {
+      linha.appendChild(document.createElement("td"));
+    }
+
+    // Preencher dias do mês
+    for (let dia = 1; dia <= ultimoDiaMes; dia++) {
+      if (linha.children.length === 7) {
+        diasTabela.appendChild(linha);
+        linha = document.createElement("tr");
+      }
+
+      let td = document.createElement("td");
+      td.textContent = dia;
+
+      // Destacar o dia atual
+      let hoje = new Date();
+      if (
+        dia === hoje.getDate() &&
+        mes === hoje.getMonth() &&
+        ano === hoje.getFullYear()
+      ) {
+        td.classList.add("dia-hoje");
+      }
+
+      linha.appendChild(td);
+    }
+
+    diasTabela.appendChild(linha);
+  }
+
+  // Botões navegação
+  btnAnterior.addEventListener("click", function () {
+    data.setMonth(data.getMonth() - 1);
+    renderizarCalendario();
+  });
+
+  btnProximo.addEventListener("click", function () {
+    data.setMonth(data.getMonth() + 1);
+    renderizarCalendario();
+  });
+
+  renderizarCalendario();
+});
+
+function carregarTurmasProfessor() {
+  const professorLogado = JSON.parse(localStorage.getItem("professorLogado"));
+  const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+  const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+
+  const lista = document.getElementById("listaTurmas");
+  lista.innerHTML = "";
+
+  const turmasProfessor = turmas.filter(t => t.idProfessor === professorLogado.id);
+
+  turmasProfessor.forEach(turma => {
+    const disciplina = disciplinas.find(d => d.id === turma.idDisciplina);
+
+    lista.innerHTML += `
+      <tr>
+        <td>${turma.nome}</td>
+        <td>${disciplina ? disciplina.nome : "—"}</td>
+        <td><button class="btn-ver-alunos" onclick="verAlunosTurma('${turma.id}')">Ver Alunos</button></td>
+      </tr>
+    `;
+  });
 }
+
+document.getElementById("linkTurmas").addEventListener("click", () => {
+  mostrarPagina("turmas");
+  carregarTurmasProfessor();
+});
+
+function verAlunosTurma(idTurma) {
+  localStorage.setItem("turmaSelecionada", idTurma);
+  mostrarPagina("lancarNotas"); // Redireciona para a tela onde já lista os alunos
+}
+
 </script>
 </body>
 </html>
