@@ -71,80 +71,97 @@
           <ul id="notasAluno"></ul>
         </div>
       </section>
+
+      <!-- ===== SEÇÃO DE PROFESSORES (INTERNA DO ADMIN) ===== -->
+<section id="professores" class="secao">
+  <h2>Lista de Professores</h2>
+  <p>Selecione um professor para visualizar seus dados.</p>
+
+  <div id="listaProfessores" class="lista-alunos"></div>
+
+  <div id="infoProfessor" class="info-aluno oculto">
+    <h3 id="nomeProfessorInfo"></h3>
+    <p><strong>Disciplina:</strong> <span id="disciplinaProfessor"></span></p>
+    <p><strong>Turmas:</strong> <span id="turmasProfessor"></span></p>
+  </div>
+</section>
+
     </main>
   </div>
 
   <!-- ===== SCRIPT DE LOGIN E NAVEGAÇÃO ===== -->
   <script>
-    // ==== LOGIN ====
-    const admin = JSON.parse(localStorage.getItem("adminLogado"));
-    if (!admin) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById("saudacao").textContent = `Bem-vindo, ${admin.email}!`;
-    }
+  // ==== LOGIN ====
+  const admin = JSON.parse(localStorage.getItem("adminLogado"));
+  if (!admin) {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("saudacao").textContent = `Bem-vindo, ${admin.email}!`;
+  }
 
-    // ==== SAIR ====
-    document.getElementById("botaoSair").addEventListener("click", () => {
-      localStorage.removeItem("adminLogado");
-      window.location.href = "index.html";
+  // ==== SAIR ====
+  document.getElementById("botaoSair").addEventListener("click", () => {
+    localStorage.removeItem("adminLogado");
+    window.location.href = "index.html";
+  });
+
+  // ==== MENU LATERAL ====
+  const menuItens = document.querySelectorAll(".menu-item");
+  const secoes = document.querySelectorAll(".secao");
+
+  menuItens.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      const texto = item.textContent.trim();
+
+      // Deixa o link de cadastro funcionar normalmente
+      if (texto.includes("Cadastrar")) return;
+
+      e.preventDefault();
+      menuItens.forEach(i => i.classList.remove("ativo"));
+      item.classList.add("ativo");
+
+      secoes.forEach(sec => sec.classList.remove("ativa"));
+
+      if (texto.includes("Dashboard")) document.getElementById("dashboard").classList.add("ativa");
+      if (texto === "Alunos") document.getElementById("alunos").classList.add("ativa");
+      if (texto === "Professores") document.getElementById("professores").classList.add("ativa");
+    });
+  });
+
+  // ==== LISTA DE ALUNOS ====
+  const alunos = [
+    { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web", professor: "Carlos Andrade", notas: [9.5, 8.7, 9.0] },
+    { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados", professor: "Ana Lima", notas: [8.9, 9.3, 9.1] },
+    { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação", professor: "João Melo", notas: [8.0, 8.4, 8.6] }
+  ];
+
+  const listaAlunos = document.getElementById("listaAlunos");
+  const infoAluno = document.getElementById("infoAluno");
+
+  alunos.forEach(aluno => {
+    const div = document.createElement("div");
+    div.classList.add("aluno-card");
+    div.textContent = aluno.nome;
+    div.addEventListener("click", () => mostrarInfo(aluno));
+    listaAlunos.appendChild(div);
+  });
+
+  function mostrarInfo(aluno) {
+    document.getElementById("nomeAlunoInfo").textContent = aluno.nome;
+    document.getElementById("turmaAluno").textContent = aluno.turma;
+    document.getElementById("disciplinaAluno").textContent = aluno.disciplina;
+    document.getElementById("professorAluno").textContent = aluno.professor;
+
+    const ul = document.getElementById("notasAluno");
+    ul.innerHTML = "";
+    aluno.notas.forEach(nota => {
+      const li = document.createElement("li");
+      li.textContent = `Nota: ${nota}`;
+      ul.appendChild(li);
     });
 
-    // ==== MENU LATERAL ====
-    const menuItens = document.querySelectorAll(".menu-item");
-    const secoes = document.querySelectorAll(".secao");
-
-    menuItens.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        const texto = item.textContent.trim();
-
-        // Deixa o link de cadastro funcionar normalmente
-        if (texto.includes("Cadastrar")) return;
-
-        e.preventDefault();
-        menuItens.forEach(i => i.classList.remove("ativo"));
-        item.classList.add("ativo");
-
-        secoes.forEach(sec => sec.classList.remove("ativa"));
-        if (texto.includes("Dashboard")) document.getElementById("dashboard").classList.add("ativa");
-        if (texto === "Alunos") document.getElementById("alunos").classList.add("ativa");
-      });
-    });
-
-    // ==== LISTA DE ALUNOS ====
-    const alunos = [
-      { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web", professor: "Carlos Andrade", notas: [9.5, 8.7, 9.0] },
-      { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados", professor: "Ana Lima", notas: [8.9, 9.3, 9.1] },
-      { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação", professor: "João Melo", notas: [8.0, 8.4, 8.6] }
-    ];
-
-    const listaAlunos = document.getElementById("listaAlunos");
-    const infoAluno = document.getElementById("infoAluno");
-
-    alunos.forEach(aluno => {
-      const div = document.createElement("div");
-      div.classList.add("aluno-card");
-      div.textContent = aluno.nome;
-      div.addEventListener("click", () => mostrarInfo(aluno));
-      listaAlunos.appendChild(div);
-    });
-
-    function mostrarInfo(aluno) {
-      document.getElementById("nomeAlunoInfo").textContent = aluno.nome;
-      document.getElementById("turmaAluno").textContent = aluno.turma;
-      document.getElementById("disciplinaAluno").textContent = aluno.disciplina;
-      document.getElementById("professorAluno").textContent = aluno.professor;
-
-      const ul = document.getElementById("notasAluno");
-      ul.innerHTML = "";
-      aluno.notas.forEach(nota => {
-        const li = document.createElement("li");
-        li.textContent = `Nota: ${nota}`;
-        ul.appendChild(li);
-      });
-
-      infoAluno.classList.remove("oculto");
-    }
-  </script>
+    infoAluno.classList.remove("oculto");
+  }
+</script>
 </body>
 </html>
