@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   color: #fff;
-  background: url("imagens/Fundo_Educacional.png") no-repeat center center fixed;
+  background: url("imagens/Fundo_Cadastro.png")no-repeat center center fixed;
   background-size: cover;
   display: flex;
   min-height: 100vh;
@@ -18,7 +18,7 @@ body {
 /* --- SIDEBAR --- */
 .sidebar {
   width: 250px;
-  background: linear-gradient(180deg, #0a2a66, #132e83);
+  background: url("imagens/Fundo_Professor.png")no-repeat center center fixed;
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
