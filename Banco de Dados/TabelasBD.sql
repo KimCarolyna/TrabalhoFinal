@@ -37,6 +37,7 @@ CREATE TABLE `aluno` (
   `id_aluno` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `nome` varchar(150) DEFAULT NULL,
+  `data_nascimento` date NOT NULL,
   `cpf` char(11) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `telefone` varchar(20) DEFAULT NULL,
