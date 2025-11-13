@@ -2,6 +2,7 @@
 -- CRIAÇÃO DO BANCO DE DADOS
 -- =========================
 
+
 create database escolavirtual;
 use escolavirtual;
 
