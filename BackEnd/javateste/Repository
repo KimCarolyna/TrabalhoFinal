@@ -1,0 +1,6 @@
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {}
+public interface AlunoRepository extends JpaRepository<Aluno, Integer> {}
+public interface ProfessorRepository extends JpaRepository<Professor, Integer> {}
+public interface DisciplinaRepository extends JpaRepository<Disciplina, Integer> {}
+public interface MatriculaRepository extends JpaRepository<Matricula, Integer> {}
+public interface NotaRepository extends JpaRepository<Nota, Integer> {}
