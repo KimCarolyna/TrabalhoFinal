@@ -1,4 +1,4 @@
-document.getElementById("loginForm").addEventListener("submit", async function (e) {
+/*document.getElementById("loginForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim();
@@ -68,4 +68,9 @@ toggleSenha.addEventListener("click", () => {
     toggleSenha.classList.remove("ri-eye-line");
     toggleSenha.classList.add("ri-eye-off-line");
   }
-});
+});*/
+
+
+// ====================================================
+// CASO O OUTRO CÓDIGO NÃO  FUNCIONE, USAR ESSE ANTIGO.
+// ====================================================
