@@ -1,42 +1,59 @@
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const username = document.getElementById("email").value.trim(); // pode ser email ou username
+  const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
   const erroLogin = document.getElementById("erroLogin");
 
   try {
-    const resp = await fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username, password: senha })
-    });
+    // === Verifica ADMINISTRADORES ===
+    const respAdmins = await fetch("admins.json");
+    const dadosAdmins = await respAdmins.json();
+    const adminValido = dadosAdmins.admins.find(
+      (admin) => admin.email === email && admin.senha === senha
+    );
 
-    if (!resp.ok) {
-      erroLogin.textContent = "Usuário ou senha inválidos!";
+    if (adminValido) {
+      localStorage.setItem("adminLogado", JSON.stringify(adminValido));
+      window.location.href = "admin.html";
       return;
     }
 
-    const dados = await resp.json();
-    localStorage.setItem("token", dados.token);
-    localStorage.setItem("role", dados.role);
-    localStorage.setItem("nome", dados.nomeCompleto);
+    // === Verifica PROFESSORES ===
+    const respProfs = await fetch("professores.json");
+    const dadosProfs = await respProfs.json();
+    const professorValido = dadosProfs.professores.find(
+      (prof) => prof.email === email && prof.senha === senha
+    );
 
-    // Redireciona conforme o tipo
-    if (dados.role === "ADMIN") {
-      window.location.href = "admin.html";
-    } else if (dados.role === "PROFESSOR") {
+    if (professorValido) {
+      localStorage.setItem("professorLogado", JSON.stringify(professorValido));
       window.location.href = "professor.html";
-    } else if (dados.role === "ALUNO") {
-      window.location.href = "aluno.html";
+      return;
     }
+
+    // === Verifica ALUNOS ===
+    const respAlunos = await fetch("alunos.json");
+    const dadosAlunos = await respAlunos.json();
+    const alunoValido = dadosAlunos.alunos.find(
+      (aluno) => aluno.email === email && aluno.senha === senha
+    );
+
+    if (alunoValido) {
+      localStorage.setItem("alunoLogado", JSON.stringify(alunoValido));
+      window.location.href = "aluno.html";
+      return;
+    }
+
+    // Caso não encontre em nenhum JSON:
+    erroLogin.textContent = "E-mail ou senha incorretos!";
   } catch (erro) {
-    console.error("Erro no login:", erro);
+    console.error("Erro ao carregar dados:", erro);
     erroLogin.textContent = "Erro no servidor. Tente novamente mais tarde.";
   }
 });
 
-// === Mostrar / ocultar senha (mantém igual) ===
+// === Mostrar / ocultar senha ===
 const toggleSenha = document.getElementById("toggleSenha");
 const campoSenha = document.getElementById("senha");
 
@@ -52,3 +69,8 @@ toggleSenha.addEventListener("click", () => {
     toggleSenha.classList.add("ri-eye-off-line");
   }
 });
+
+
+// ====================================================
+// CASO O OUTRO CÓDIGO NÃO  FUNCIONE, USAR ESSE ANTIGO.
+// ====================================================
