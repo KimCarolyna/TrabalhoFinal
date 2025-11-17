@@ -20,8 +20,6 @@
     <nav class="menu-topo">
       <ul>
         <li class="ativo" onclick="mostrar('dashboard')"><i class="ri-dashboard-line"></i> Dashboard</li>
-        <li onclick="mostrar('disciplinas')"><i class="ri-book-open-line"></i> Disciplinas</li>
-        <li onclick="mostrar('turmas')"><i class="ri-group-line"></i> Turmas</li>
         <li onclick="mostrar('notas')"><i class="ri-file-list-3-line"></i> Lançar Notas</li>
         <li onclick="mostrar('relatorios')"><i class="ri-bar-chart-2-line"></i> Relatórios</li>
         <li onclick="mostrar('calendario')"><i class="ri-calendar-line"></i> Calendário</li>
@@ -47,18 +45,6 @@
         <p>Registre e atualize as notas dos alunos.</p>
       </div>
 
-      <div class="card" onclick="mostrar('turmas')">
-        <i class="ri-group-line"></i>
-        <h2>Gerenciar Turmas</h2>
-        <p>Visualize e organize suas turmas.</p>
-      </div>
-
-      <div class="card" onclick="mostrar('disciplinas')">
-        <i class="ri-book-open-line"></i>
-        <h2>Minhas Disciplinas</h2>
-        <p>Acesse e edite suas disciplinas ativas.</p>
-      </div>
-
       <div class="card" onclick="mostrar('relatorios')">
         <i class="ri-bar-chart-2-line"></i>
         <h2>Relatórios</h2>
@@ -79,41 +65,6 @@
     </section>
 
     <!-- ===== PÁGINAS ===== -->
-<section id="disciplinas" class="pagina oculto">
-  <h2>Minhas Disciplinas</h2>
-
-  <div class="disciplinas-header">
-    <button id="btnAddDisciplina">+ Adicionar Disciplina</button>
-  </div>
-
-  <table class="tabela-relatorio" id="tabelaDisciplinas">
-    <thead>
-      <tr>
-        <th>Disciplina</th>
-        <th>Turmas Associadas</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
-
-<section id="turmas" class="pagina oculto">
-  <h2>Gerenciar Turmas</h2>
-
-  <div class="turmas-container">
-    <table class="tabela-turmas">
-      <thead>
-        <tr>
-          <th>Nome da Turma</th>
-          <th>Disciplina</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="listaTurmas"></tbody>
-    </table>
-  </div>
-</section>
 
 <!-- ✅ NOVA SEÇÃO DE LANÇAMENTO DE NOTAS -->
 <section id="notas" class="pagina oculto">

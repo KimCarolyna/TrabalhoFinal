@@ -12,6 +12,8 @@
     <aside class="sidebar">
       <div class="perfil">
         <img src="imagens/Foto_de_Perfil_Pedro.png" alt="Foto do Aluno" id="fotoPerfil" />
+        <label id="btnTrocarFoto" for="inputFoto">Trocar Foto</label>
+<input type="file" id="inputFoto">
         <h3 id="nomeAluno">Aluno</h3>
         <p class="emailAluno">aluno@nota10.com</p>
       </div>
@@ -149,6 +151,20 @@
       localStorage.removeItem("alunoLogado");
       window.location.href = "index.html";
     });
+    const inputFoto = document.getElementById("inputFoto");
+  const fotoPerfil = document.getElementById("fotoPerfil");
+
+  inputFoto.addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        fotoPerfil.src = e.target.result; // troca a imagem
+      };
+
+      reader.readAsDataURL(this.files[0]); // carrega a imagem selecionada
+    }
+  });
   </script>
 </body>
 </html>
