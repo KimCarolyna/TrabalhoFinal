@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Professores</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="edicao2.css" />
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ========== MENU LATERAL ========== -->
+    <aside class="sidebar">
+      <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
+
+      <div class="sidebar-banner">
+        <img src="imagens/Up.png" alt="Gestão de professores" class="banner-imagem">
+      </div>
+
+      <nav class="menu">
+        <a href="admin.html" class="menu-item"><i class="ri-dashboard-line"></i> Dashboard</a>
+        <a href="Edicao2.html" class="menu-item ativo"><i class="ri-user-3-line"></i> Professores</a>
+        <a href="Cadastro.html" class="menu-item"><i class="ri-add-line"></i> Cadastrar</a>
+      </nav>
+    </aside>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main class="conteudo">
+
+      <header class="topbar">
+        <h1>Lista de Professores</h1>
+        <p>Visualize os professores cadastrados no sistema.</p>
+      </header>
+
+      <section class="tabela-container">
+        <div class="tabela-wrapper">
+
+          <table class="tabela-alunos">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Disciplinas</th>
+                <th>Turmas</th>
+              </tr>
+            </thead>
+
+            <tbody id="tabelaProfessores"></tbody>
+
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // LISTA OFICIAL
+    const professores = [
+      {
+        email: "ana@nota10.com",
+        senha: "123456",
+        nome: "Ana Souza",
+        disciplinas: ["Desenvolvimento Web", "Banco de Dados"],
+        turmas: ["3ºA - Informática", "3ºB - Informática"]
+      },
+      {
+        email: "carlos@nota10.com",
+        senha: "654321",
+        nome: "Carlos Andrade",
+        disciplinas: ["Lógica de Programação", "Estruturas de Dados"],
+        turmas: ["2ºA - Informática"]
+      },
+      {
+        email: "mariana@nota10.com",
+        senha: "789123",
+        nome: "Mariana Lopes",
+        disciplinas: ["Matemática Aplicada", "Estatística"],
+        turmas: ["1ºB - Matemática", "2ºB - Matemática"]
+      },
+      {
+        email: "joao@nota10.com",
+        senha: "321789",
+        nome: "João Silva",
+        disciplinas: ["Banco de Dados", "Engenharia de Software"],
+        turmas: ["3ºA - Informática", "3ºC - Sistemas"]
+      }
+    ];
+
+    const tabela = document.getElementById("tabelaProfessores");
+
+    professores.forEach((prof) => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${prof.nome}</td>
+        <td>${prof.email}</td>
+        <td>${prof.disciplinas.join(", ")}</td>
+        <td>${prof.turmas.join(", ")}</td>
+      `;
+
+      tabela.appendChild(row);
+    });
+  </script>
+</body>
+</html>

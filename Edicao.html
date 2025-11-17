@@ -9,11 +9,11 @@
 </head>
 <body>
   <div class="layout">
-    <!-- ===== MENU LATERAL ===== -->
+
+    <!-- MENU LATERAL -->
 <aside class="sidebar">
   <h2 class="logo"><i class="ri-graduation-cap-line"></i> Gestão</h2>
 
-  <!-- ===== IMAGEM BANNER VERTICAL ===== -->
   <div class="sidebar-banner">
     <img src="imagens/Up.png" alt="Gestão de alunos" class="banner-imagem">
   </div>
@@ -25,14 +25,14 @@
   </nav>
 </aside>
 
-    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <!-- CONTEÚDO -->
     <main class="conteudo">
       <header class="topbar">
         <h1>Gerenciamento de Alunos</h1>
-        <p>Visualize, edite ou remova alunos cadastrados.</p>
+        <p>Apenas visualização dos alunos cadastrados.</p>
       </header>
 
-      <button class="botao-novo">+ Novo Aluno</button>
+      <!-- 🔥 BOTÃO REMOVIDO 🔥 -->
 
       <section class="tabela-container">
         <div class="tabela-wrapper">
@@ -42,8 +42,6 @@
                 <th>Nome</th>
                 <th>Turma</th>
                 <th>Disciplina</th>
-                <th>Professor</th>
-                <th>Ações</th>
               </tr>
             </thead>
             <tbody id="tabelaAlunos"></tbody>
@@ -55,44 +53,22 @@
 
   <script>
     const alunos = [
-      { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web", professor: "Carlos Andrade" },
-      { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados", professor: "Ana Lima" },
-      { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação", professor: "João Melo" }
+      { nome: "Pedro Silva", turma: "3ºA - Informática", disciplina: "Desenvolvimento Web" },
+      { nome: "Maria Souza", turma: "3ºB - Redes", disciplina: "Banco de Dados" },
+      { nome: "Lucas Pereira", turma: "2ºA - Informática", disciplina: "Lógica de Programação" }
     ];
 
     const tabela = document.getElementById("tabelaAlunos");
 
-    alunos.forEach((aluno, i) => {
+    alunos.forEach((aluno) => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${aluno.nome}</td>
         <td>${aluno.turma}</td>
         <td>${aluno.disciplina}</td>
-        <td>${aluno.professor}</td>
-        <td>
-          <button class="acao editar" onclick="editarAluno(${i})"><i class="ri-edit-line"></i></button>
-          <button class="acao excluir" onclick="excluirAluno(${i})"><i class="ri-delete-bin-6-line"></i></button>
-        </td>
       `;
       tabela.appendChild(row);
     });
-
-    function editarAluno(i) {
-      const novoNome = prompt("Digite o novo nome do aluno:", alunos[i].nome);
-      if (novoNome) {
-        alunos[i].nome = novoNome;
-        alert("Aluno atualizado com sucesso!");
-        location.reload();
-      }
-    }
-
-    function excluirAluno(i) {
-      if (confirm(`Deseja realmente excluir ${alunos[i].nome}?`)) {
-        alunos.splice(i, 1);
-        alert("Aluno excluído com sucesso!");
-        location.reload();
-      }
-    }
   </script>
 </body>
 </html>

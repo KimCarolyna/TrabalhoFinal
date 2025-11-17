@@ -40,10 +40,11 @@
             <p>Editar ou excluir cadastros existentes.</p>
           </div>
 
-          <div class="card">
-            <i class="ri-user-3-line icone-card"></i>
-            <h3>Professores</h3>
-            <p>Visualizar e gerenciar professores cadastrados.</p>
+          <!-- ESTE CARD LEVA PARA A TELA DE EDIÇÃO (Edicao2.html) -->
+          <div class="card destaque" onclick="window.location.href='Edicao2.html'">
+            <i class="ri-edit-2-line icone-card"></i>
+            <h3>Gerenciar Professores</h3>
+            <p>Editar ou excluir cadastros existentes.</p>
           </div>
 
           <div class="card destaque">
@@ -88,6 +89,20 @@
 
     </main>
   </div>
+
+  <!-- ===== SEÇÃO DE PROFESSORES (INTERNA DO ADMIN) ===== -->
+<section id="professores" class="secao">
+  <h2>Lista de Professores</h2>
+  <p>Selecione um professor para visualizar seus dados.</p>
+
+  <div id="listaProfessores" class="lista-alunos"></div>
+
+  <div id="infoProfessor" class="info-aluno oculto">
+    <h3 id="nomeProfessorInfo"></h3>
+    <p><strong>Disciplina:</strong> <span id="disciplinaProfessor"></span></p>
+    <p><strong>Turmas:</strong> <span id="turmasProfessor"></span></p>
+  </div>
+</section>
 
   <!-- ===== SCRIPT DE LOGIN E NAVEGAÇÃO ===== -->
   <script>
@@ -162,6 +177,74 @@
 
     infoAluno.classList.remove("oculto");
   }
+
+  // ====================== PROFESSORES ========================
+
+// Criar lista inicial apenas se ainda NÃO existir no localStorage
+if (!localStorage.getItem("professores")) {
+  const professoresIniciais = [
+    {
+      nome: "Carlos Andrade",
+      disciplina: "Matemática",
+      turmas: ["7A", "7B", "8A"]
+    },
+    {
+      nome: "Ana Lima",
+      disciplina: "Português",
+      turmas: ["6A", "6B"]
+    },
+    {
+      nome: "João Melo",
+      disciplina: "História",
+      turmas: ["8B", "9A"]
+    }
+  ];
+
+  localStorage.setItem("professores", JSON.stringify(professoresIniciais));
+}
+
+// Recupera dados do localStorage
+const professores = JSON.parse(localStorage.getItem("professores")) || [];
+
+// Elementos HTML
+const listaProfessores = document.getElementById("listaProfessores");
+const infoProfessor = document.getElementById("infoProfessor");
+const nomeProfessorInfo = document.getElementById("nomeProfessorInfo");
+const disciplinaProfessor = document.getElementById("disciplinaProfessor");
+const turmasProfessor = document.getElementById("turmasProfessor");
+
+// Renderizar cartões dos professores
+function carregarProfessores() {
+  listaProfessores.innerHTML = "";
+
+  if (professores.length === 0) {
+    listaProfessores.innerHTML = "<p>Nenhum professor cadastrado.</p>";
+    return;
+  }
+
+  professores.forEach((prof, index) => {
+    const card = document.createElement("div");
+    card.classList.add("aluno-card"); // usa o mesmo estilo dos alunos
+    card.innerHTML = `<h3>${prof.nome}</h3><p>${prof.disciplina}</p>`;
+    card.onclick = () => mostrarInfoProfessor(index);
+    listaProfessores.appendChild(card);
+  });
+}
+
+// Mostrar dados detalhados do professor
+function mostrarInfoProfessor(i) {
+  const prof = professores[i];
+
+  nomeProfessorInfo.textContent = prof.nome;
+  disciplinaProfessor.textContent = prof.disciplina;
+  turmasProfessor.textContent = prof.turmas ? prof.turmas.join(", ") : "Não informado";
+
+  infoProfessor.classList.remove("oculto");
+}
+
+// Carrega automaticamente
+carregarProfessores();
+
 </script>
 </body>
 </html>
